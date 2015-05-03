@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace SpackChess
 {
-    class King : Piece
+    class Knight : Piece
     {
         /// <summary>
-        /// König darf ein Feld in jede Richtung gehen. 
+        /// Die offizielle FIDE-Beschreibung lautet: Der Springer darf auf eines der Felder ziehen, die seinem Standfeld am nächsten,
+        /// aber nicht auf gleicher Reihe, Linie oder Diagonale mit diesem liegen. 
         /// </summary>
         /// <param name="currentLocation"></param>
         /// <returns></returns>
@@ -18,12 +19,12 @@ namespace SpackChess
             var validSquares = new List<Square>();
             int x = currentLocation.XCoordinate;
             int y = currentLocation.YCoordinate;
-            
+
             // Zwei Listen für mögliche x und y Koordinaten werden erstellt. 
             // Die Items der beiden Listen gehören zusammen, also possibleX[1] und possibleY[1]. So können mit einer for schleife alle Felder abgefragt werden. 
-            // Das erste Feld ist rechts neben dem aktuellen Feld. Reihenfolge dann im Uhrzeigersinn.
-            List<int> possibleX = new List<int>(8) {x+1, x+1, x, x-1, x-1, x-1, x, x+1};
-            List<int> possibleY = new List<int>(8) {y, y-1, y-1, y-1, y, y+1, y+1, y+1};
+            // Das erste Feld ist oben rechts neben dem aktuellen Feld. Reihenfolge dann im Uhrzeigersinn.
+            List<int> possibleX = new List<int>(8) { x+1, x+2, x+2, x+1, x-1, x-2, x-2, x-1 };
+            List<int> possibleY = new List<int>(8) { y+2, y+1, y-1, y-2, y-2, y-1, y+1, y+2 };
 
             for (int i = 1; i == 8; i++)
             {
@@ -33,7 +34,7 @@ namespace SpackChess
                 {
                     validSquares.Add(helpSquare);
                 }
-           
+
             }
             return validSquares;
         }

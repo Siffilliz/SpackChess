@@ -20,6 +20,8 @@ namespace SpackChess
     /// </summary>
     public abstract partial class Piece : UserControl
     {
+        internal IChessboard m_chessboard;
+
         public Image Graphic
         {
             get;
@@ -35,6 +37,12 @@ namespace SpackChess
         public Piece()
         {
             InitializeComponent();
+        }
+
+        public Piece(IChessboard chessboard)
+        {
+           this.m_chessboard = chessboard;
+           InitializeComponent();
         }
 
         public abstract List<Square> GetValidMoves(Square currentLocation);

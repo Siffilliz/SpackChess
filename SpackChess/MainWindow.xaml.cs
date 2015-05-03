@@ -18,10 +18,14 @@ namespace SpackChess
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IChessboard
     {
-
         private List<Square> m_allSqaures = new List<Square>();
+
+        public List<Square> AllSquares
+        {
+            get { return m_allSqaures; }
+        }
 
         public MainWindow()
         {

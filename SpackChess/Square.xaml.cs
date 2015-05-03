@@ -37,14 +37,6 @@ namespace SpackChess
             private set;
             get;
         }
-        /// <summary>
-        /// Bool ob das Feld besetzt ist. Muss abgefragt werden, wenn die gültigen Züge berechnet werden. Wird im Konstruktur auf false gesetzt.
-        /// </summary>
-        public bool Occupied
-        {
-            get;
-            set;
-        }
 
         public Piece OccupyingPiece
         {
@@ -67,8 +59,6 @@ namespace SpackChess
             {
                 this.Background = new SolidColorBrush(Colors.Beige);
             }
-
-            Occupied = false;
 
             InitializeComponent();            
         }

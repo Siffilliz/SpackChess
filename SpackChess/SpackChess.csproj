@@ -70,11 +70,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Bishop.cs" />
+    <Compile Include="IChessboard.cs" />
     <Compile Include="King.cs" />
+    <Compile Include="Knight.cs" />
     <Compile Include="Pawn.cs" />
     <Compile Include="Piece.xaml.cs">
       <DependentUpon>Piece.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Rook.cs" />
     <Compile Include="Square.xaml.cs">
       <DependentUpon>Square.xaml</DependentUpon>
     </Compile>
