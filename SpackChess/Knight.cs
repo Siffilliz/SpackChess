@@ -8,6 +8,22 @@ namespace SpackChess
 {
     class Knight : Piece
     {
+         public Knight(Square squareToOccupy, Alignments color)  
+            : base(squareToOccupy, color)
+        {
+            m_graphic = new System.Windows.Controls.Image();
+
+            if (this.Alignment == Alignments.Black)
+            {
+                m_graphic.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/Pictures/NB.png"));
+            }
+            else
+            {
+                m_graphic.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/Pictures/NW.png"));
+            }
+            
+            this.GrPiece.Children.Add(this.m_graphic);
+        }
         /// <summary>
         /// Die offizielle FIDE-Beschreibung lautet: Der Springer darf auf eines der Felder ziehen, die seinem Standfeld am nächsten,
         /// aber nicht auf gleicher Reihe, Linie oder Diagonale mit diesem liegen. 

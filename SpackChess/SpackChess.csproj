@@ -78,6 +78,7 @@
     <Compile Include="Piece.xaml.cs">
       <DependentUpon>Piece.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Queen.cs" />
     <Compile Include="Rook.cs" />
     <Compile Include="Square.xaml.cs">
       <DependentUpon>Square.xaml</DependentUpon>
@@ -113,6 +114,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pictures\BB.png" />
+    <Resource Include="Pictures\BW.png" />
+    <Resource Include="Pictures\KB.png" />
+    <Resource Include="Pictures\KW.png" />
+    <Resource Include="Pictures\NB.png" />
+    <Resource Include="Pictures\NW.png" />
+    <Resource Include="Pictures\PB.png" />
+    <Resource Include="Pictures\PW.png" />
+    <Resource Include="Pictures\QB.png" />
+    <Resource Include="Pictures\QW.png" />
+    <Resource Include="Pictures\RB.png" />
+    <Resource Include="Pictures\RW.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

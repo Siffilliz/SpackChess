@@ -15,7 +15,24 @@ namespace SpackChess
         /// <returns></returns>
         /// 
 
-        private bool m_hasMoved = false; 
+        private bool m_hasMoved = false;
+
+        public Pawn(Square squareToOccupy, Alignments color)  
+            : base(squareToOccupy, color)
+        {
+            m_graphic = new System.Windows.Controls.Image();
+
+            if (this.Alignment == Alignments.Black)
+            {
+                m_graphic.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/Pictures/PB.png"));
+            }
+            else
+            {
+                m_graphic.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/Pictures/PW.png"));
+            }
+            
+            this.GrPiece.Children.Add(this.m_graphic);
+        }
 
         public override List<Square> GetValidMoves(Square currentLocation)
         {

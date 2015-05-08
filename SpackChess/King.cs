@@ -8,6 +8,23 @@ namespace SpackChess
 {
     class King : Piece
     {
+        public King(Square squareToOccupy, Alignments color)  
+            : base(squareToOccupy, color)
+        {
+            m_graphic = new System.Windows.Controls.Image();
+
+            if (this.Alignment == Alignments.Black)
+            {
+                m_graphic.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/Pictures/KB.png"));
+            }
+            else
+            {
+                m_graphic.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/Pictures/KW.png"));
+            }
+            
+            this.GrPiece.Children.Add(this.m_graphic);
+        }
+
         /// <summary>
         /// König darf ein Feld in jede Richtung gehen. 
         /// </summary>

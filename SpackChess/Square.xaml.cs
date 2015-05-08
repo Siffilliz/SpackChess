@@ -20,6 +20,7 @@ namespace SpackChess
     /// </summary>
     public partial class Square : UserControl
     {
+        private Piece m_occupyingPiece;
         /// <summary>
         /// Gets or sets the value of the XCoordinate.
         /// </summary>
@@ -40,8 +41,16 @@ namespace SpackChess
 
         public Piece OccupyingPiece
         {
-            get;
-            set;
+            get
+            {  
+                return (m_occupyingPiece); 
+            }
+            set
+            {
+                m_occupyingPiece = value;
+                this.GrSquare.Children.Clear();
+                this.GrSquare.Children.Add(value);
+            }
         }
 
         public Square(int x, int y)

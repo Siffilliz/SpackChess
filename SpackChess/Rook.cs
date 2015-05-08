@@ -8,6 +8,24 @@ namespace SpackChess
 {
     class Rook : Piece
     {
+
+         public Rook(Square squareToOccupy, Alignments color)  
+            : base(squareToOccupy, color)
+        {
+            m_graphic = new System.Windows.Controls.Image();
+
+            if (this.Alignment == Alignments.Black)
+            {
+                m_graphic.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/Pictures/RB.png"));
+            }
+            else
+            {
+                m_graphic.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/Pictures/RW.png"));
+            }
+            
+            this.GrPiece.Children.Add(this.m_graphic);
+        }
+
         /// <summary>
         /// Turm darf auf der x-Gerade und y-Gerade ziehen, so weit wie keine andere Figur im Weg steht.
         /// </summary>

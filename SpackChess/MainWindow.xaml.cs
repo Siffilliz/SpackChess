@@ -42,11 +42,122 @@ namespace SpackChess
                     this.GrRoot.Children.Add(newSquare);
                 }
             }
+
+            this.ResetGame();
         }
 
         public Square GetSquare(int x, int y)
         {
             return this.m_allSqaures.FirstOrDefault(s => s.XCoordinate == x && s.YCoordinate == y);
+        }
+
+        /// <summary>
+        /// Dem Square.OccupyingPiece das Piece zuweisen. getter und setter schreiben. Children zu Square hinzufügen.
+        /// Dazu den Piece Konstruktur um Alignment erweitern. 
+        /// Der Konstruktor muss in jedes Piece vererbt werden. Bild im Piece zuweisen.
+        /// Im Square Occup
+        /// </summary>
+        public void ResetGame()
+        {
+            foreach (Square squareToOccupy in this.m_allSqaures)
+            {
+                switch (squareToOccupy.YCoordinate)
+                {
+                    case 1:
+                    case 8:
+                        {
+                            switch (squareToOccupy.XCoordinate)
+                            {
+                                case 1:
+                                case 8:
+                                    {
+                                        Rook newRook;
+                                        if (squareToOccupy.YCoordinate == 1)
+                                        {
+                                            newRook = new Rook(squareToOccupy, Alignments.White);
+                                        }
+                                        else // if (squareToOccupy.YCoordinate == 8)
+                                        {
+                                            newRook = new Rook(squareToOccupy, Alignments.Black);
+                                        }
+                                        squareToOccupy.OccupyingPiece = newRook;
+                                        break;
+                                    }
+                                case 2:
+                                case 7:
+                                    {
+                                        Knight newKnight;
+                                        if (squareToOccupy.YCoordinate == 1)
+                                        {
+                                            newKnight = new Knight(squareToOccupy, Alignments.White);
+                                        }
+                                        else // if (squareToOccupy.YCoordinate == 8)
+                                        {
+                                            newKnight = new Knight(squareToOccupy, Alignments.Black);
+                                        }
+                                        squareToOccupy.OccupyingPiece = newKnight;  
+                                        break;
+                                    }
+                                case 3:
+                                case 6:
+                                    {
+                                        Bishop newBishop;
+                                        if (squareToOccupy.YCoordinate == 1)
+                                        {
+                                            newBishop = new Bishop(squareToOccupy, Alignments.White);
+                                        }
+                                        else // if (squareToOccupy.YCoordinate == 8)
+                                        {
+                                            newBishop = new Bishop(squareToOccupy, Alignments.Black);
+                                        }
+                                        squareToOccupy.OccupyingPiece = newBishop;  
+                                        break;
+                                    }
+                                case 4:
+                                    {
+                                        King newKing;
+                                        if (squareToOccupy.YCoordinate == 1)
+                                        {
+                                            newKing = new King(squareToOccupy, Alignments.White);
+                                        }
+                                        else // if (squareToOccupy.YCoordinate == 8)
+                                        {
+                                            newKing = new King(squareToOccupy, Alignments.Black);
+                                        }
+                                        squareToOccupy.OccupyingPiece = newKing;  
+                                        break;
+                                    }
+                                case 5:
+                                    {
+                                        Queen newQueen;
+                                        if (squareToOccupy.YCoordinate == 1)
+                                        {
+                                            newQueen = new Queen(squareToOccupy, Alignments.White);
+                                        }
+                                        else // if (squareToOccupy.YCoordinate == 8)
+                                        {
+                                            newQueen = new Queen(squareToOccupy, Alignments.Black);
+                                        }
+                                        squareToOccupy.OccupyingPiece = newQueen; 
+                                        break;
+                                    }
+                            } 
+                            break;
+                        }
+                    case 2:
+                        {                       
+                            var newPawn = new Pawn(squareToOccupy, Alignments.White);                            
+                            squareToOccupy.OccupyingPiece = newPawn;                       
+                            break;
+                        }
+                    case 7:
+                        {
+                            var newPawn = new Pawn(squareToOccupy, Alignments.Black);                            
+                            squareToOccupy.OccupyingPiece = newPawn;
+                            break;
+                        }
+                }
+            }
         }
     }
 }

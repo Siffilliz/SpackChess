@@ -21,11 +21,18 @@ namespace SpackChess
     public abstract partial class Piece : UserControl
     {
         internal IChessboard m_chessboard;
+        internal Image m_graphic;
 
-        public Image Graphic
+        public Image Graphic      
         {
-            get;
-            set;
+            get
+            {
+                return m_graphic;
+            }
+            set
+            {
+                m_graphic = value;
+            }
         }
 
         public Alignments Alignment
@@ -45,6 +52,13 @@ namespace SpackChess
            InitializeComponent();
         }
 
+        public Piece(Square squareToOccupy, Alignments color)
+        {
+            Alignment = color;
+            InitializeComponent();
+        }
+
         public abstract List<Square> GetValidMoves(Square currentLocation);
+
     }
 }
