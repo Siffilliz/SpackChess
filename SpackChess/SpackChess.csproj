@@ -53,6 +53,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Chessboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Piece.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -71,6 +75,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bishop.cs" />
+    <Compile Include="Chessboard.xaml.cs">
+      <DependentUpon>Chessboard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="IChessboard.cs" />
     <Compile Include="King.cs" />
     <Compile Include="Knight.cs" />

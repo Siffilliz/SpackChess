@@ -114,5 +114,19 @@ namespace SpackChess
 
             return xAsChar + YCoordinate.ToString();
         }
+
+        private void GrSquare_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (this.OccupyingPiece != null)
+            {
+                List<Square> validMoves;
+                validMoves = this.OccupyingPiece.GetValidMoves(this);
+
+                foreach (Square possibleSquare in validMoves)
+                {
+                    possibleSquare.Highlight();
+                }
+            }
+        }
     }
 }

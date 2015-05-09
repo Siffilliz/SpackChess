@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              BorderBrush="Black"             >
-    <Grid Name="GrSquare">
+    <Grid Name="GrSquare" MouseUp="GrSquare_MouseUp">
         
     </Grid>
 </UserControl>
