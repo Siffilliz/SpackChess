@@ -22,6 +22,8 @@ namespace SpackChess
     {
         internal IChessboard m_chessboard;
         internal Image m_graphic;
+        internal Square m_occupiedSquare;
+        internal bool m_hasMoved = false;
 
         public Image Graphic      
         {
@@ -41,24 +43,31 @@ namespace SpackChess
             set;
         }
 
+        public Square OccupiedSquare
+        {
+            get
+            {
+                return m_occupiedSquare;
+            }
+            set
+            {
+                m_occupiedSquare = value;
+            }
+        }
+
         public Piece()
         {
             InitializeComponent();
         }
 
-        public Piece(IChessboard chessboard)
+        public Piece(IChessboard chessboard, Alignments color)
         {
-           this.m_chessboard = chessboard;
-           InitializeComponent();
-        }
-
-        public Piece(Square squareToOccupy, Alignments color)
-        {
+            this.m_chessboard = chessboard;
+           
             Alignment = color;
             InitializeComponent();
         }
 
         public abstract List<Square> GetValidMoves(Square currentLocation);
-
     }
 }

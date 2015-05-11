@@ -42,14 +42,17 @@ namespace SpackChess
         public Piece OccupyingPiece
         {
             get
-            {  
-                return (m_occupyingPiece); 
+            {
+                return (m_occupyingPiece);
             }
             set
             {
                 m_occupyingPiece = value;
                 this.GrSquare.Children.Clear();
-                this.GrSquare.Children.Add(value);
+                if (value != null)
+                {
+                    this.GrSquare.Children.Add(value);
+                }
             }
         }
 
@@ -69,7 +72,7 @@ namespace SpackChess
                 this.Background = new SolidColorBrush(Colors.Beige);
             }
 
-            InitializeComponent();            
+            InitializeComponent();
         }
 
         /// <summary>
@@ -77,7 +80,14 @@ namespace SpackChess
         /// </summary>
         public void Highlight()
         {
-            this.Background = new SolidColorBrush(Colors.Green);
+            this.BorderBrush = new SolidColorBrush(Colors.Green);
+            this.BorderThickness = new Thickness(5);
+        }
+
+        public void UnHighlight()
+        {
+            this.BorderBrush = new SolidColorBrush(Colors.Black);
+            this.BorderThickness = new Thickness(1);
         }
 
         public override string ToString()
@@ -109,24 +119,10 @@ namespace SpackChess
                     break;
                 case 8:
                     xAsChar = "h";
-                    break;            
+                    break;
             }
 
             return xAsChar + YCoordinate.ToString();
-        }
-
-        private void GrSquare_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (this.OccupyingPiece != null)
-            {
-                List<Square> validMoves;
-                validMoves = this.OccupyingPiece.GetValidMoves(this);
-
-                foreach (Square possibleSquare in validMoves)
-                {
-                    possibleSquare.Highlight();
-                }
-            }
         }
     }
 }

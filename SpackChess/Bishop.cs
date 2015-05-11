@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace SpackChess
 {
     class Bishop : Piece
-    {    
-        public Bishop(Square squareToOccupy, Alignments color)  
-            : base(squareToOccupy, color)
+    {
+        public Bishop(IChessboard chessboard, Alignments color)
+            : base(chessboard, color)
         {
             m_graphic = new System.Windows.Controls.Image();
 
@@ -35,7 +35,7 @@ namespace SpackChess
         {
             var validSquares = new List<Square>();
 
-            int i = 0;
+            int i = 1;
             bool canMoveUpLeft = true;
             bool canMoveUpRight = true;
             bool canMoveDownLeft = true;
@@ -119,6 +119,7 @@ namespace SpackChess
                         }
                     }
                 }
+                i++;
             }
 
             return validSquares;

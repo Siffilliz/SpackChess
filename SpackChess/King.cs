@@ -8,8 +8,8 @@ namespace SpackChess
 {
     class King : Piece
     {
-        public King(Square squareToOccupy, Alignments color)  
-            : base(squareToOccupy, color)
+        public King(IChessboard chessboard, Alignments color)
+            : base(chessboard, color)
         {
             m_graphic = new System.Windows.Controls.Image();
 
@@ -42,15 +42,17 @@ namespace SpackChess
             List<int> possibleX = new List<int>(8) {x+1, x+1, x, x-1, x-1, x-1, x, x+1};
             List<int> possibleY = new List<int>(8) {y, y-1, y-1, y-1, y, y+1, y+1, y+1};
 
-            for (int i = 1; i == 8; i++)
+            for (int i = 0; i < 8; i++)
             {
                 Square helpSquare = this.m_chessboard.GetSquare(possibleX[i], possibleY[i]);
 
-                if (helpSquare.OccupyingPiece == null || helpSquare.OccupyingPiece.Alignment != this.Alignment)
+                if (helpSquare != null)
                 {
-                    validSquares.Add(helpSquare);
+                    if (helpSquare.OccupyingPiece == null || helpSquare.OccupyingPiece.Alignment != this.Alignment)
+                    {
+                        validSquares.Add(helpSquare);
+                    }
                 }
-           
             }
             return validSquares;
         }

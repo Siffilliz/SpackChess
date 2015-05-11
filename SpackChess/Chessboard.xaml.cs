@@ -18,6 +18,8 @@ namespace SpackChess
     public partial class Chessboard : IChessboard
     {
         private List<Square> m_allSqaures = new List<Square>();
+        private Square m_previousSelectedSquare;
+        private List<Square> m_previousPossibleSquares = new List<Square>();
 
         public List<Square> AllSquares
         {
@@ -34,7 +36,7 @@ namespace SpackChess
                     var newSquare = new Square(x, y);
                     newSquare.SetValue(Grid.RowProperty, 8 - y);
                     newSquare.SetValue(Grid.ColumnProperty, x - 1);
-                    // newSquare.MouseUp += 
+                    newSquare.MouseUp += this.Square_MouseUp;
                     this.m_allSqaures.Add(newSquare);
                     this.GrChessboard.Children.Add(newSquare);
                 }
@@ -67,11 +69,11 @@ namespace SpackChess
                                         Rook newRook;
                                         if (squareToOccupy.YCoordinate == 1)
                                         {
-                                            newRook = new Rook(squareToOccupy, Alignments.White);
+                                            newRook = new Rook(this, Alignments.White) { OccupiedSquare = squareToOccupy };                                            
                                         }
                                         else // if (squareToOccupy.YCoordinate == 8)
                                         {
-                                            newRook = new Rook(squareToOccupy, Alignments.Black);
+                                            newRook = new Rook(this, Alignments.Black) { OccupiedSquare = squareToOccupy };
                                         }
                                         squareToOccupy.OccupyingPiece = newRook;
                                         break;
@@ -82,13 +84,13 @@ namespace SpackChess
                                         Knight newKnight;
                                         if (squareToOccupy.YCoordinate == 1)
                                         {
-                                            newKnight = new Knight(squareToOccupy, Alignments.White);
+                                            newKnight = new Knight(this, Alignments.White) { OccupiedSquare = squareToOccupy };
                                         }
                                         else // if (squareToOccupy.YCoordinate == 8)
                                         {
-                                            newKnight = new Knight(squareToOccupy, Alignments.Black);
+                                            newKnight = new Knight(this, Alignments.Black) { OccupiedSquare = squareToOccupy };
                                         }
-                                        squareToOccupy.OccupyingPiece = newKnight;
+                                        squareToOccupy.OccupyingPiece = newKnight;                              
                                         break;
                                     }
                                 case 3:
@@ -97,11 +99,11 @@ namespace SpackChess
                                         Bishop newBishop;
                                         if (squareToOccupy.YCoordinate == 1)
                                         {
-                                            newBishop = new Bishop(squareToOccupy, Alignments.White);
+                                            newBishop = new Bishop(this, Alignments.White) { OccupiedSquare = squareToOccupy };
                                         }
                                         else // if (squareToOccupy.YCoordinate == 8)
                                         {
-                                            newBishop = new Bishop(squareToOccupy, Alignments.Black);
+                                            newBishop = new Bishop(this, Alignments.Black) { OccupiedSquare = squareToOccupy };
                                         }
                                         squareToOccupy.OccupyingPiece = newBishop;
                                         break;
@@ -111,11 +113,11 @@ namespace SpackChess
                                         King newKing;
                                         if (squareToOccupy.YCoordinate == 1)
                                         {
-                                            newKing = new King(squareToOccupy, Alignments.White);
+                                            newKing = new King(this, Alignments.White) { OccupiedSquare = squareToOccupy };
                                         }
                                         else // if (squareToOccupy.YCoordinate == 8)
                                         {
-                                            newKing = new King(squareToOccupy, Alignments.Black);
+                                            newKing = new King(this, Alignments.Black) { OccupiedSquare = squareToOccupy };
                                         }
                                         squareToOccupy.OccupyingPiece = newKing;
                                         break;
@@ -125,11 +127,11 @@ namespace SpackChess
                                         Queen newQueen;
                                         if (squareToOccupy.YCoordinate == 1)
                                         {
-                                            newQueen = new Queen(squareToOccupy, Alignments.White);
+                                            newQueen = new Queen(this, Alignments.White) { OccupiedSquare = squareToOccupy };
                                         }
                                         else // if (squareToOccupy.YCoordinate == 8)
                                         {
-                                            newQueen = new Queen(squareToOccupy, Alignments.Black);
+                                            newQueen = new Queen(this, Alignments.Black) { OccupiedSquare = squareToOccupy };
                                         }
                                         squareToOccupy.OccupyingPiece = newQueen;
                                         break;
@@ -139,19 +141,86 @@ namespace SpackChess
                         }
                     case 2:
                         {
-                            var newPawn = new Pawn(squareToOccupy, Alignments.White);
+                            var newPawn = new Pawn(this, Alignments.White) { OccupiedSquare = squareToOccupy };
                             squareToOccupy.OccupyingPiece = newPawn;
                             break;
                         }
                     case 7:
                         {
-                            var newPawn = new Pawn(squareToOccupy, Alignments.Black);
+                            var newPawn = new Pawn(this, Alignments.Black) { OccupiedSquare = squareToOccupy };
                             squareToOccupy.OccupyingPiece = newPawn;
                             break;
                         }
                 }
             }
         }
-  
+        private void Square_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Square selectedSquare = sender as Square;
+
+            if (m_previousSelectedSquare == null)
+            {
+                if (selectedSquare != null && selectedSquare.OccupyingPiece != null)
+                {
+                    m_previousSelectedSquare = selectedSquare;
+                    List<Square> validMoves;
+                    validMoves = selectedSquare.OccupyingPiece.GetValidMoves(selectedSquare);
+
+                    foreach (Square possibleSquare in validMoves)
+                    {
+                        possibleSquare.Highlight();
+                        m_previousPossibleSquares.Add(possibleSquare);
+                    }
+                }
+            }
+            else if (m_previousSelectedSquare == selectedSquare)
+            {                         
+                foreach (Square possibleSquare in m_previousPossibleSquares)
+                {
+                    possibleSquare.UnHighlight();                    
+                }
+                m_previousSelectedSquare = null;
+                m_previousPossibleSquares.Clear();
+            }
+            else if (m_previousPossibleSquares.Contains(selectedSquare))
+            {
+                foreach (Square possibleSquare in m_previousPossibleSquares)
+                {
+                    possibleSquare.UnHighlight();    
+                }
+
+                m_previousSelectedSquare.OccupyingPiece.OccupiedSquare = selectedSquare;
+                m_previousSelectedSquare.OccupyingPiece.m_hasMoved = true;
+                m_previousSelectedSquare.GrSquare.Children.Clear();
+                selectedSquare.OccupyingPiece = m_previousSelectedSquare.OccupyingPiece;
+                m_previousSelectedSquare.OccupyingPiece = null;
+              
+                m_previousPossibleSquares.Clear();
+                m_previousSelectedSquare = null;
+            }
+            else
+            {
+                m_previousSelectedSquare = null;
+
+                foreach (Square possibleSquare in m_previousPossibleSquares)
+                {
+                    possibleSquare.UnHighlight();
+                }
+                m_previousPossibleSquares.Clear();
+
+                if (selectedSquare != null && selectedSquare.OccupyingPiece != null)
+                {
+                    m_previousSelectedSquare = selectedSquare;
+                    List<Square> validMoves;
+                    validMoves = selectedSquare.OccupyingPiece.GetValidMoves(selectedSquare);
+
+                    foreach (Square possibleSquare in validMoves)
+                    {
+                        possibleSquare.Highlight();
+                        m_previousPossibleSquares.Add(possibleSquare);
+                    }
+                }
+            }
+        }
     }
 }

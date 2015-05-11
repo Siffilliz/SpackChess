@@ -8,8 +8,8 @@ namespace SpackChess
 {
     class Queen : Piece
     {
-        public Queen(Square squareToOccupy, Alignments color)  
-            : base(squareToOccupy, color)
+        public Queen(IChessboard chessboard, Alignments color)
+            : base(chessboard, color)
         {
             m_graphic = new System.Windows.Controls.Image();
 
@@ -35,7 +35,7 @@ namespace SpackChess
         {
             var validSquares = new List<Square>();
 
-            int i = 0;
+            int i = 1;
             bool canMoveUpLeft = true;
             bool canMoveUpRight = true;
             bool canMoveDownLeft = true;
@@ -119,6 +119,7 @@ namespace SpackChess
                         }
                     }
                 }
+                i++;
             }
             
             //Zusätzlich die Abfragen von Rook
@@ -128,7 +129,7 @@ namespace SpackChess
             // Richtungen können mittels 4 for Schleifen durchlaufen werden, Startwert ist die aktuelle Position, Zähler einmal +1, einmal -1
             // Ist ein Feld belegt, kann die Zählung abgebrochen werden 
             // in x Richtung nach rechts
-            for (i = x; i == 8; i++)            // prüfen was die for Schleife macht, wenn startkoordinate = 8 ist.
+            for (i = x + 1; i <= 8; i++)            // prüfen was die for Schleife macht, wenn startkoordinate = 8 ist.
             {
 
                 helpSquare = this.m_chessboard.GetSquare(i, y);
@@ -147,7 +148,7 @@ namespace SpackChess
                 }
             }
             // in x-Richtung nach links
-            for (i = x; i == 1; i--)          // prüfen was die for Schleife macht, wenn startkoordinate = 1 ist.
+            for (i = x - 1; i >= 1; i--)          // prüfen was die for Schleife macht, wenn startkoordinate = 1 ist.
             {
                 helpSquare = this.m_chessboard.GetSquare(i, y);
 
@@ -165,7 +166,7 @@ namespace SpackChess
                 }
             }
             // in y-Richtung nach oben
-            for (i = y; i == 8; i++)            // prüfen was die for Schleife macht, wenn startkoordinate = 8 ist.
+            for (i = y + 1; i <= 8; i++)            // prüfen was die for Schleife macht, wenn startkoordinate = 8 ist.
             {
                 helpSquare = this.m_chessboard.GetSquare(x, i);
 
@@ -183,7 +184,7 @@ namespace SpackChess
                 }
             }
             // in y-Richtung nach unten
-            for (i = y; i == 1; i--)          // prüfen was die for Schleife macht, wenn startkoordinate = 1 ist.
+            for (i = y - 1; i >= 1; i--)          // prüfen was die for Schleife macht, wenn startkoordinate = 1 ist.
             {
                 helpSquare = this.m_chessboard.GetSquare(x, i);
 

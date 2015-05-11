@@ -23,7 +23,6 @@ namespace SpackChess
         public MainWindow()
         {
             InitializeComponent();
-
             this.GrRoot.Children.Add(new Chessboard());
         }
     }
