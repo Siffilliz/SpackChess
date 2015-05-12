@@ -20,6 +20,7 @@ namespace SpackChess
         private List<Square> m_allSqaures = new List<Square>();
         private Square m_previousSelectedSquare;
         private List<Square> m_previousPossibleSquares = new List<Square>();
+        private Alignments m_whosTurnIsIt = Alignments.White;
 
         public List<Square> AllSquares
         {
@@ -50,7 +51,7 @@ namespace SpackChess
         }
 
         /// <summary>
-        /// Chessbpard auf Standardanfangsaufstellung bringen
+        /// Chessboard auf Standardanfangsaufstellung bringen
         /// </summary>
         public void ResetGame()
         {
@@ -157,27 +158,30 @@ namespace SpackChess
         private void Square_MouseUp(object sender, MouseButtonEventArgs e)
         {
             Square selectedSquare = sender as Square;
-
-            if (m_previousSelectedSquare == null)
+                        
+            if (m_previousSelectedSquare == null)       // keine Figur ist schon ausgewählt, d.h. falls ein Feld mit Figur ausgewählt wird, mögliche Felder markieren
             {
-                if (selectedSquare != null && selectedSquare.OccupyingPiece != null)
+                if (selectedSquare != null && selectedSquare.OccupyingPiece != null)                        // Wenn ein Feld mit Figur ausgewählt wird, möglich Züge ermitteln.
                 {
-                    m_previousSelectedSquare = selectedSquare;
-                    List<Square> validMoves;
-                    validMoves = selectedSquare.OccupyingPiece.GetValidMoves(selectedSquare);
-
-                    foreach (Square possibleSquare in validMoves)
+                    if (selectedSquare.OccupyingPiece.Alignment == m_whosTurnIsIt)                      // Prüfen ob auch der richtige Spieler am Zug ist
                     {
-                        possibleSquare.Highlight();
-                        m_previousPossibleSquares.Add(possibleSquare);
+                        m_previousSelectedSquare = selectedSquare;
+                        List<Square> validMoves;
+                        validMoves = selectedSquare.OccupyingPiece.GetValidMoves(selectedSquare);
+
+                        foreach (Square possibleSquare in validMoves)
+                        {
+                            possibleSquare.Highlight();
+                            m_previousPossibleSquares.Add(possibleSquare);
+                        }
                     }
                 }
             }
             else if (m_previousSelectedSquare == selectedSquare)
-            {                         
+            {
                 foreach (Square possibleSquare in m_previousPossibleSquares)
                 {
-                    possibleSquare.UnHighlight();                    
+                    possibleSquare.UnHighlight();
                 }
                 m_previousSelectedSquare = null;
                 m_previousPossibleSquares.Clear();
@@ -186,7 +190,7 @@ namespace SpackChess
             {
                 foreach (Square possibleSquare in m_previousPossibleSquares)
                 {
-                    possibleSquare.UnHighlight();    
+                    possibleSquare.UnHighlight();
                 }
 
                 m_previousSelectedSquare.OccupyingPiece.OccupiedSquare = selectedSquare;
@@ -194,30 +198,42 @@ namespace SpackChess
                 m_previousSelectedSquare.GrSquare.Children.Clear();
                 selectedSquare.OccupyingPiece = m_previousSelectedSquare.OccupyingPiece;
                 m_previousSelectedSquare.OccupyingPiece = null;
-              
+
                 m_previousPossibleSquares.Clear();
                 m_previousSelectedSquare = null;
+
+                if (m_whosTurnIsIt == Alignments.White)
+                {
+                    m_whosTurnIsIt = Alignments.Black;
+                }
+                else
+                {
+                    m_whosTurnIsIt = Alignments.White;
+                }
             }
             else
             {
-                m_previousSelectedSquare = null;
-
-                foreach (Square possibleSquare in m_previousPossibleSquares)
+                if (selectedSquare.OccupyingPiece != null)
                 {
-                    possibleSquare.UnHighlight();
-                }
-                m_previousPossibleSquares.Clear();
-
-                if (selectedSquare != null && selectedSquare.OccupyingPiece != null)
-                {
-                    m_previousSelectedSquare = selectedSquare;
-                    List<Square> validMoves;
-                    validMoves = selectedSquare.OccupyingPiece.GetValidMoves(selectedSquare);
-
-                    foreach (Square possibleSquare in validMoves)
+                    if (selectedSquare.OccupyingPiece.Alignment == m_whosTurnIsIt)
                     {
-                        possibleSquare.Highlight();
-                        m_previousPossibleSquares.Add(possibleSquare);
+                        m_previousSelectedSquare = null;
+
+                        foreach (Square possibleSquare in m_previousPossibleSquares)
+                        {
+                            possibleSquare.UnHighlight();
+                        }
+                        m_previousPossibleSquares.Clear();
+
+                        m_previousSelectedSquare = selectedSquare;
+                        List<Square> validMoves;
+                        validMoves = selectedSquare.OccupyingPiece.GetValidMoves(selectedSquare);
+
+                        foreach (Square possibleSquare in validMoves)
+                        {
+                            possibleSquare.Highlight();
+                            m_previousPossibleSquares.Add(possibleSquare);
+                        }                        
                     }
                 }
             }
