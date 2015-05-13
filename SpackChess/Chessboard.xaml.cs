@@ -157,27 +157,9 @@ namespace SpackChess
         }
         private void Square_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            Square selectedSquare = sender as Square;
-                        
-            if (m_previousSelectedSquare == null)       // keine Figur ist schon ausgewählt, d.h. falls ein Feld mit Figur ausgewählt wird, mögliche Felder markieren
-            {
-                if (selectedSquare != null && selectedSquare.OccupyingPiece != null)                        // Wenn ein Feld mit Figur ausgewählt wird, möglich Züge ermitteln.
-                {
-                    if (selectedSquare.OccupyingPiece.Alignment == m_whosTurnIsIt)                      // Prüfen ob auch der richtige Spieler am Zug ist
-                    {
-                        m_previousSelectedSquare = selectedSquare;
-                        List<Square> validMoves;
-                        validMoves = selectedSquare.OccupyingPiece.GetValidMoves(selectedSquare);
-
-                        foreach (Square possibleSquare in validMoves)
-                        {
-                            possibleSquare.Highlight();
-                            m_previousPossibleSquares.Add(possibleSquare);
-                        }
-                    }
-                }
-            }
-            else if (m_previousSelectedSquare == selectedSquare)
+            Square selectedSquare = sender as Square;  
+            
+            if (m_previousSelectedSquare == selectedSquare)        // gleiches Feld wieder gewählt => mögliche Züge nicht mehr markieren
             {
                 foreach (Square possibleSquare in m_previousPossibleSquares)
                 {
@@ -186,7 +168,7 @@ namespace SpackChess
                 m_previousSelectedSquare = null;
                 m_previousPossibleSquares.Clear();
             }
-            else if (m_previousPossibleSquares.Contains(selectedSquare))
+            else if (m_previousPossibleSquares.Contains(selectedSquare))        // ein Feld der möglichen Züge wurde gewählt => Zug durchführen
             {
                 foreach (Square possibleSquare in m_previousPossibleSquares)
                 {
@@ -211,14 +193,13 @@ namespace SpackChess
                     m_whosTurnIsIt = Alignments.White;
                 }
             }
-            else
+            else                                                                        
             {
                 if (selectedSquare.OccupyingPiece != null)
                 {
                     if (selectedSquare.OccupyingPiece.Alignment == m_whosTurnIsIt)
                     {
-                        m_previousSelectedSquare = null;
-
+                        // die Markierung der vorher ausgewählten Spielzüge wird aufgehoben 
                         foreach (Square possibleSquare in m_previousPossibleSquares)
                         {
                             possibleSquare.UnHighlight();
@@ -228,15 +209,14 @@ namespace SpackChess
                         m_previousSelectedSquare = selectedSquare;
                         List<Square> validMoves;
                         validMoves = selectedSquare.OccupyingPiece.GetValidMoves(selectedSquare);
-
                         foreach (Square possibleSquare in validMoves)
                         {
                             possibleSquare.Highlight();
                             m_previousPossibleSquares.Add(possibleSquare);
-                        }                        
-                    }
+                        }
+                    }                   
                 }
-            }
+            }           
         }
     }
 }
