@@ -15,5 +15,10 @@ namespace SpackChess
 
         Square GetSquare(int x, int y);
 
+        String LastMove
+        {
+            get;
+            set;
+        }
     }
 }

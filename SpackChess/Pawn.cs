@@ -123,8 +123,95 @@ namespace SpackChess
                         }
                     }
                 }
-            }       
+            }
+            helpSquare = enPassant(currentLocation);
+            if (helpSquare != null)
+            {
+                validSquares.Add(helpSquare);
+            }
             return validSquares;
-        }        
+        }
+        
+        public override string ToString()
+        {
+            return "";
+        }
+        //todo: en-passant
+        // was braucht man dafür?
+        // - aktuelle Position des Bauers? Weiß: Linie 5; Schwarz: Linie 4
+        // - letzter Zug muss ein benachbarter Bauer gewesen sein, der einen Doppelzug gemacht hat
+        private Square enPassant(Square currentLocation)
+        {            
+            Square possibleEnPassantSquare;
+            if (currentLocation.OccupyingPiece.Alignment == Alignments.White && currentLocation.YCoordinate == 5)
+            {
+                possibleEnPassantSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate - 1, currentLocation.YCoordinate);
+                if (possibleEnPassantSquare.OccupyingPiece != null)
+                {
+                    if (possibleEnPassantSquare.OccupyingPiece.Alignment != this.Alignment)
+                    {
+                        String possibleEnPassant = this.m_chessboard.GetSquare(possibleEnPassantSquare.XCoordinate, possibleEnPassantSquare.YCoordinate + 2).ToString() + "-" + possibleEnPassantSquare.ToString();
+                        if (this.m_chessboard.LastMove == possibleEnPassant)
+                        {
+                            return this.m_chessboard.GetSquare(possibleEnPassantSquare.XCoordinate, possibleEnPassantSquare.YCoordinate+1);
+                        }
+                        else return null;
+                    }
+                    else return null;
+                }
+                
+                possibleEnPassantSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate + 1, currentLocation.YCoordinate);
+                if (possibleEnPassantSquare.OccupyingPiece != null)
+                {
+                    if (possibleEnPassantSquare.OccupyingPiece.Alignment != this.Alignment)
+                    {
+                        String possibleEnPassant = this.m_chessboard.GetSquare(possibleEnPassantSquare.XCoordinate, possibleEnPassantSquare.YCoordinate + 2).ToString() + "-" + possibleEnPassantSquare.ToString();
+                        if (this.m_chessboard.LastMove == possibleEnPassant)
+                        {
+                            return this.m_chessboard.GetSquare(possibleEnPassantSquare.XCoordinate, possibleEnPassantSquare.YCoordinate + 1);
+                        }
+                        else return null;
+                    }
+                    else return null;
+                }
+                else return null;
+            }
+            else if (currentLocation.OccupyingPiece.Alignment == Alignments.Black && currentLocation.YCoordinate == 4)
+            {
+                possibleEnPassantSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate - 1, currentLocation.YCoordinate);
+                if (possibleEnPassantSquare.OccupyingPiece != null)
+                {
+                    if (possibleEnPassantSquare.OccupyingPiece.Alignment != this.Alignment)
+                    {
+                        String possibleEnPassant = this.m_chessboard.GetSquare(possibleEnPassantSquare.XCoordinate, possibleEnPassantSquare.YCoordinate - 2).ToString() + "-" + possibleEnPassantSquare.ToString();
+                        if (this.m_chessboard.LastMove == possibleEnPassant)
+                        {
+                            return this.m_chessboard.GetSquare(possibleEnPassantSquare.XCoordinate, possibleEnPassantSquare.YCoordinate - 1);
+                        }
+                        else return null;
+                    }
+                    else return null;
+                }
+
+                possibleEnPassantSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate + 1, currentLocation.YCoordinate);
+                if (possibleEnPassantSquare.OccupyingPiece != null)
+                {
+                    if (possibleEnPassantSquare.OccupyingPiece.Alignment != this.Alignment)
+                    {
+                        String possibleEnPassant = this.m_chessboard.GetSquare(possibleEnPassantSquare.XCoordinate, possibleEnPassantSquare.YCoordinate - 2).ToString() + "-" + possibleEnPassantSquare.ToString();
+                        if (this.m_chessboard.LastMove == possibleEnPassant)
+                        {
+                            return this.m_chessboard.GetSquare(possibleEnPassantSquare.XCoordinate, possibleEnPassantSquare.YCoordinate - 1);
+                        }
+                        else return null;
+                    }
+                    else return null;
+                }
+                else return null;
+            }
+            else return null;            
+        }
+
+        //todo: Bauer Umwandlung
     }
 }

@@ -21,6 +21,7 @@ namespace SpackChess
         private Square m_previousSelectedSquare;
         private List<Square> m_previousPossibleSquares = new List<Square>();
         private Alignments m_whosTurnIsIt = Alignments.White;
+        private string m_lastMove;
 
         public List<Square> AllSquares
         {
@@ -155,6 +156,7 @@ namespace SpackChess
                 }
             }
         }
+              
         private void Square_MouseUp(object sender, MouseButtonEventArgs e)
         {
             Square selectedSquare = sender as Square;  
@@ -175,15 +177,32 @@ namespace SpackChess
                     possibleSquare.UnHighlight();
                 }
 
+
                 m_previousSelectedSquare.OccupyingPiece.OccupiedSquare = selectedSquare;
-                m_previousSelectedSquare.OccupyingPiece.m_hasMoved = true;
                 m_previousSelectedSquare.GrSquare.Children.Clear();
                 selectedSquare.OccupyingPiece = m_previousSelectedSquare.OccupyingPiece;
+                //Abfrage wegen en passant. Später wahrscheinlich auch noch Rochade
+                if (m_previousSelectedSquare.OccupyingPiece is Pawn && selectedSquare.OccupyingPiece != null && selectedSquare.XCoordinate != m_previousSelectedSquare.XCoordinate)
+                {                                      
+                    this.WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece, true);
+                    if (m_whosTurnIsIt == Alignments.White)
+                    {
+                        this.GetSquare(selectedSquare.XCoordinate, selectedSquare.YCoordinate - 1).OccupyingPiece = null;
+                    }
+                    else
+                    {
+                        this.GetSquare(selectedSquare.XCoordinate, selectedSquare.YCoordinate + 1).OccupyingPiece = null;
+                    }                    
+                }
+                else
+                {    
+                    this.WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece);                   
+                }
+                m_previousSelectedSquare.OccupyingPiece.m_hasMoved = true;  
                 m_previousSelectedSquare.OccupyingPiece = null;
-
                 m_previousPossibleSquares.Clear();
                 m_previousSelectedSquare = null;
-
+                
                 if (m_whosTurnIsIt == Alignments.White)
                 {
                     m_whosTurnIsIt = Alignments.Black;
@@ -194,7 +213,7 @@ namespace SpackChess
                 }
             }
             else                                                                        
-            {
+            {   
                 if (selectedSquare.OccupyingPiece != null)
                 {
                     if (selectedSquare.OccupyingPiece.Alignment == m_whosTurnIsIt)
@@ -206,17 +225,34 @@ namespace SpackChess
                         }
                         m_previousPossibleSquares.Clear();
 
-                        m_previousSelectedSquare = selectedSquare;
-                        List<Square> validMoves;
+                        // mögliche Züge ermitteln
+                        List<Square> validMoves;                                     
                         validMoves = selectedSquare.OccupyingPiece.GetValidMoves(selectedSquare);
                         foreach (Square possibleSquare in validMoves)
                         {
                             possibleSquare.Highlight();
                             m_previousPossibleSquares.Add(possibleSquare);
                         }
+
+                        m_previousSelectedSquare = selectedSquare;
                     }                   
                 }
             }           
+        }
+
+        public string LastMove
+        {
+            get { return m_lastMove; }
+            set { m_lastMove = value; }
+        }
+
+        public void WriteLastMove(Square startSquare, Square endSquare, Piece movedPiece)
+        {
+            m_lastMove = movedPiece.ToString() + startSquare.ToString() + "-" + endSquare.ToString();
+        }
+        public void WriteLastMove(Square startSquare, Square endSquare, Piece movedPiece, bool enPassant)
+        {
+            m_lastMove = movedPiece.ToString() + startSquare.ToString() + "x" + endSquare.ToString() + " e.p.";
         }
     }
 }

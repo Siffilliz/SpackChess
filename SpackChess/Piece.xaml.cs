@@ -69,5 +69,7 @@ namespace SpackChess
         }
 
         public abstract List<Square> GetValidMoves(Square currentLocation);
+
+        public abstract override string ToString();
     }
 }

@@ -56,5 +56,10 @@ namespace SpackChess
             }
             return validSquares;
         }
+
+        public override string ToString()
+        {
+            return "N";
+        }
     }
 }
