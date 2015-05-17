@@ -78,9 +78,16 @@ namespace SpackChess
         /// <summary>
         /// Gültige Züge sollen gehighlighted werden. Muss beim Ausführen des Zuges irgendwie rückgängig gemacht werden.
         /// </summary>
-        public void Highlight()
+        public void Highlight(bool check = false)
         {
-            this.BorderBrush = new SolidColorBrush(Colors.Green);
+            if (check)
+            {
+                this.BorderBrush = new SolidColorBrush(Colors.Red);
+            }
+            else
+            {
+                this.BorderBrush = new SolidColorBrush(Colors.Green);               
+            }
             this.BorderThickness = new Thickness(5);
         }
 

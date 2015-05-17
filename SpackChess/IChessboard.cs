@@ -20,5 +20,10 @@ namespace SpackChess
             get;
             set;
         }
+
+        //Boolean SquareAttacked(Square squareToExamine, Alignments attackingAlignment)
+        //{
+
+        //}
     }
 }

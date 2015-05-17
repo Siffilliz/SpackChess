@@ -21,6 +21,7 @@ namespace SpackChess
         private Square m_previousSelectedSquare;
         private List<Square> m_previousPossibleSquares = new List<Square>();
         private Alignments m_whosTurnIsIt = Alignments.White;
+        private Alignments m_whosTurnIsItNot = Alignments.Black;
       
         public List<Square> AllSquares
         {
@@ -35,6 +36,16 @@ namespace SpackChess
             get;
             set;
         }
+        private Alignments WhosTurnIsIt
+        {
+            get { return m_whosTurnIsIt; }
+            set
+            {
+                m_whosTurnIsItNot = m_whosTurnIsIt;
+                m_whosTurnIsIt = value;                
+            }
+        }
+
         public Chessboard()
         {
             InitializeComponent();
@@ -161,7 +172,7 @@ namespace SpackChess
         }
               
         private void Square_MouseUp(object sender, MouseButtonEventArgs e)
-        {
+        {            
             Square selectedSquare = sender as Square;  
             
             if (m_previousSelectedSquare == selectedSquare)        // gleiches Feld wieder gewählt => mögliche Züge nicht mehr markieren
@@ -175,19 +186,16 @@ namespace SpackChess
             }
             else if (m_previousPossibleSquares.Contains(selectedSquare))        // ein Feld der möglichen Züge wurde gewählt => Zug durchführen
             {
-                foreach (Square possibleSquare in m_previousPossibleSquares)
+                foreach (Square possibleSquare in m_allSqaures)
                 {
                     possibleSquare.UnHighlight();
                 }
                 
-                m_previousSelectedSquare.OccupyingPiece.OccupiedSquare = selectedSquare;
-                m_previousSelectedSquare.GrSquare.Children.Clear();
-                selectedSquare.OccupyingPiece = m_previousSelectedSquare.OccupyingPiece;
                 //Abfrage wegen en passant. Später wahrscheinlich auch noch Rochade
-                if (m_previousSelectedSquare.OccupyingPiece is Pawn && selectedSquare.OccupyingPiece != null && selectedSquare.XCoordinate != m_previousSelectedSquare.XCoordinate)
+                if (m_previousSelectedSquare.OccupyingPiece is Pawn && selectedSquare.XCoordinate != m_previousSelectedSquare.XCoordinate && selectedSquare.OccupyingPiece == null)
                 {                                      
                     this.WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece, true);
-                    if (m_whosTurnIsIt == Alignments.White)
+                    if (WhosTurnIsIt == Alignments.White)
                     {
                         this.GetSquare(selectedSquare.XCoordinate, selectedSquare.YCoordinate - 1).OccupyingPiece = null;
                     }
@@ -204,25 +212,35 @@ namespace SpackChess
                 {
                     this.WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece);
                 }
-                m_previousSelectedSquare.OccupyingPiece.m_hasMoved = true;  
+               
+                m_previousSelectedSquare.GrSquare.Children.Clear();
+                selectedSquare.OccupyingPiece = m_previousSelectedSquare.OccupyingPiece;
+                selectedSquare.OccupyingPiece.OccupiedSquare = selectedSquare;
+                selectedSquare.OccupyingPiece.m_hasMoved = true;  
                 m_previousSelectedSquare.OccupyingPiece = null;
                 m_previousPossibleSquares.Clear();
                 m_previousSelectedSquare = null;
                 
-                if (m_whosTurnIsIt == Alignments.White)
+                var possibleCheckSquares = new List<Square>();
+                possibleCheckSquares = selectedSquare.OccupyingPiece.GetValidMoves(selectedSquare);
+                Square enemyKingLocation = this.getKingLocation(m_whosTurnIsItNot);
+                if (possibleCheckSquares.Contains(enemyKingLocation))
                 {
-                    m_whosTurnIsIt = Alignments.Black;
+                    if (!this.SquareAttacked(selectedSquare, this.WhosTurnIsIt) && (enemyKingLocation.OccupyingPiece.GetValidMoves(enemyKingLocation).Count == 0))
+                    {
+                        MessageBox.Show("GAME OVER");
+                    }                    
+                    enemyKingLocation.Highlight(true);
                 }
-                else
-                {
-                    m_whosTurnIsIt = Alignments.White;
-                }
+               
+                m_previousPossibleSquares.Clear();
+                this.WhosTurnIsIt = this.m_whosTurnIsItNot;
             }
             else                                                                        
             {   
                 if (selectedSquare.OccupyingPiece != null)
                 {
-                    if (selectedSquare.OccupyingPiece.Alignment == m_whosTurnIsIt)
+                    if (selectedSquare.OccupyingPiece.Alignment == WhosTurnIsIt)
                     {
                         // die Markierung der vorher ausgewählten Spielzüge wird aufgehoben 
                         foreach (Square possibleSquare in m_previousPossibleSquares)
@@ -267,7 +285,7 @@ namespace SpackChess
             switch (choosePromotion.PromotedTo)
             {
                 case ChessPieces.Queen:
-                    if (m_whosTurnIsIt == Alignments.White)
+                    if (WhosTurnIsIt == Alignments.White)
                     {
                         chosenPiece = new Queen(this, Alignments.White) { OccupiedSquare = selectedSquare };
                     }
@@ -277,7 +295,7 @@ namespace SpackChess
                     }
                     return chosenPiece;
                 case ChessPieces.Rook:
-                    if (m_whosTurnIsIt == Alignments.White)
+                    if (WhosTurnIsIt == Alignments.White)
                     {
                         chosenPiece = new Rook(this, Alignments.White) { OccupiedSquare = selectedSquare };
                     }
@@ -287,7 +305,7 @@ namespace SpackChess
                     }
                     return chosenPiece;
                 case ChessPieces.Knight:
-                    if (m_whosTurnIsIt == Alignments.White)
+                    if (WhosTurnIsIt == Alignments.White)
                     {
                         chosenPiece = new Knight(this, Alignments.White) { OccupiedSquare = selectedSquare };
                     }
@@ -297,7 +315,7 @@ namespace SpackChess
                     }
                     return chosenPiece;
                 case ChessPieces.Bishop:
-                    if (m_whosTurnIsIt == Alignments.White)
+                    if (WhosTurnIsIt == Alignments.White)
                     {
                         chosenPiece = new Bishop(this, Alignments.White) { OccupiedSquare = selectedSquare };
                     }
@@ -309,6 +327,52 @@ namespace SpackChess
                 default:
                     return null;
             }  
+        }
+
+        private Square getKingLocation(Alignments color)
+        {            
+            foreach (Square possibleSquare in this.m_allSqaures)
+            {               
+                if (possibleSquare.OccupyingPiece is King && possibleSquare.OccupyingPiece.Alignment == color)
+                {
+                    return possibleSquare;
+                }               
+            }
+            return null;
+        }
+
+        public Boolean SquareAttacked(Square squareToExamine, Alignments attackingAlignment)
+        {
+            var allEnemyPiecesOnChessboard = new List<Piece>();            
+            foreach (Square possibleSquare in this.m_allSqaures)
+            {
+                if (possibleSquare.OccupyingPiece != null && possibleSquare.OccupyingPiece.Alignment == attackingAlignment)
+                {
+                    allEnemyPiecesOnChessboard.Add(possibleSquare.OccupyingPiece);
+                }
+            }
+            
+            foreach (Piece enemyPiece in allEnemyPiecesOnChessboard)
+            {
+                var enemyCheckedSquares = new List<Square>();
+                enemyCheckedSquares = enemyPiece.GetValidMoves(enemyPiece.OccupiedSquare);
+                foreach (Square enemyCheckedSquare in enemyCheckedSquares)
+                {
+                    if (enemyCheckedSquare == squareToExamine)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private Boolean verifyCheckMate(Square attackingSquare, Square attackedSquare)
+        {
+
+
+            return false;
         }
     }
 }

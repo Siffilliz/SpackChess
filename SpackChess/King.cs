@@ -50,7 +50,10 @@ namespace SpackChess
                 {
                     if (potentialSquare.OccupyingPiece == null || potentialSquare.OccupyingPiece.Alignment != this.Alignment)
                     {
-                        validSquares.Add(potentialSquare);
+                        //if (this.m_chessboard.SquareAttacked(potentialSquare, Alignments.Black))
+                        //{
+                            validSquares.Add(potentialSquare);
+                        //}
                     }
                 }
             }
