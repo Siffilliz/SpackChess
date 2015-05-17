@@ -44,13 +44,13 @@ namespace SpackChess
 
             for (int i = 0; i < 8; i++)
             {
-                Square helpSquare = this.m_chessboard.GetSquare(possibleX[i], possibleY[i]);
+                Square potentialSquare = this.m_chessboard.GetSquare(possibleX[i], possibleY[i]);
 
-                if (helpSquare != null)
+                if (potentialSquare != null)
                 {
-                    if (helpSquare.OccupyingPiece == null || helpSquare.OccupyingPiece.Alignment != this.Alignment)
+                    if (potentialSquare.OccupyingPiece == null || potentialSquare.OccupyingPiece.Alignment != this.Alignment)
                     {
-                        validSquares.Add(helpSquare);
+                        validSquares.Add(potentialSquare);
                     }
                 }
             }

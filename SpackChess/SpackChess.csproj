@@ -61,6 +61,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Promotion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Square.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -81,9 +85,13 @@
     <Compile Include="IChessboard.cs" />
     <Compile Include="King.cs" />
     <Compile Include="Knight.cs" />
+    <Compile Include="ChessPieces.cs" />
     <Compile Include="Pawn.cs" />
     <Compile Include="Piece.xaml.cs">
       <DependentUpon>Piece.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Promotion.xaml.cs">
+      <DependentUpon>Promotion.xaml</DependentUpon>
     </Compile>
     <Compile Include="Queen.cs" />
     <Compile Include="Rook.cs" />

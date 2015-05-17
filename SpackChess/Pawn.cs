@@ -15,6 +15,7 @@ namespace SpackChess
         /// <returns></returns>
         /// 
         
+
         public Pawn(IChessboard chessboard, Alignments color)  
             : base(chessboard, color)
         {
@@ -35,99 +36,63 @@ namespace SpackChess
         public override List<Square> GetValidMoves(Square currentLocation)
         {
             var validSquares = new List<Square>();
-            Square helpSquare;
+            Square potentialSquare;
             if (currentLocation.OccupyingPiece.Alignment == Alignments.White)
             {
-                helpSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate, currentLocation.YCoordinate + 2);
-                if (helpSquare != null)
+                potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate, currentLocation.YCoordinate + 2);               
+                if (potentialSquare != null && potentialSquare.OccupyingPiece == null && m_hasMoved == false)
                 {
-                    if (helpSquare.OccupyingPiece == null)
+                    if (this.m_chessboard.GetSquare(potentialSquare.XCoordinate, potentialSquare.YCoordinate - 1).OccupyingPiece == null)
                     {
-                        if (m_hasMoved == false)
-                        {
-                            validSquares.Add(helpSquare);
-                        }
-                    }
+                        validSquares.Add(potentialSquare);
+                    }                   
                 }
-                helpSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate, currentLocation.YCoordinate + 1);
-                if (helpSquare != null)
+                potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate, currentLocation.YCoordinate + 1);
+                if (potentialSquare != null && potentialSquare.OccupyingPiece == null)
                 {
-                    if (helpSquare.OccupyingPiece == null)
-                    {
-                        validSquares.Add(helpSquare);
-                    }
+                    validSquares.Add(potentialSquare);
                 }
-                helpSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate + 1, currentLocation.YCoordinate + 1);
-                if (helpSquare != null)
+                potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate + 1, currentLocation.YCoordinate + 1);               
+                if (potentialSquare != null && potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment != this.Alignment)
                 {
-                    if (helpSquare.OccupyingPiece != null)
-                    {
-                        if (helpSquare.OccupyingPiece.Alignment != this.Alignment)
-                        {
-                            validSquares.Add(helpSquare);
-                        }
-                    }
+                    validSquares.Add(potentialSquare);
                 }
-                helpSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate - 1, currentLocation.YCoordinate + 1);
-                if (helpSquare != null)
+                potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate - 1, currentLocation.YCoordinate + 1);
+                if (potentialSquare != null && potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment != this.Alignment)
                 {
-                    if (helpSquare.OccupyingPiece != null)
-                    {
-                        if (helpSquare.OccupyingPiece.Alignment != this.Alignment)
-                        {
-                            validSquares.Add(helpSquare);
-                        }
-                    }
+                    validSquares.Add(potentialSquare);
                 }
             }
             else
             {
-                helpSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate, currentLocation.YCoordinate - 2);
-                if (helpSquare != null)
+                potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate, currentLocation.YCoordinate - 2);
+                if (potentialSquare != null && potentialSquare.OccupyingPiece == null && m_hasMoved == false)
                 {
-                    if (helpSquare.OccupyingPiece == null)
+                    if (this.m_chessboard.GetSquare(potentialSquare.XCoordinate, potentialSquare.YCoordinate + 1).OccupyingPiece == null)
                     {
-                        if (m_hasMoved == false)
-                        {
-                            validSquares.Add(helpSquare);
-                        }
+                        validSquares.Add(potentialSquare);
                     }
                 }
-                helpSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate, currentLocation.YCoordinate - 1);
-                if (helpSquare != null)
+                potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate, currentLocation.YCoordinate - 1);
+                if (potentialSquare != null && potentialSquare.OccupyingPiece == null)
                 {
-                    if (helpSquare.OccupyingPiece == null)
-                    {
-                        validSquares.Add(helpSquare);
-                    }
+                    validSquares.Add(potentialSquare);
                 }
-                helpSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate + 1, currentLocation.YCoordinate - 1);
-                if (helpSquare != null)
+                potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate + 1, currentLocation.YCoordinate - 1);
+                if (potentialSquare != null && potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment != this.Alignment)
                 {
-                    if (helpSquare.OccupyingPiece != null)
-                    {
-                        if (helpSquare.OccupyingPiece.Alignment != this.Alignment)
-                        {
-                            validSquares.Add(helpSquare);
-                        }
-                    }
+                    validSquares.Add(potentialSquare);
                 }
-                helpSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate - 1, currentLocation.YCoordinate - 1);
-                if (helpSquare != null)
+                potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate - 1, currentLocation.YCoordinate - 1);
+                if (potentialSquare != null && potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment != this.Alignment)
                 {
-                    if (helpSquare.OccupyingPiece != null)
-                    {
-                        if (helpSquare.OccupyingPiece.Alignment != this.Alignment)
-                        {
-                            validSquares.Add(helpSquare);
-                        }
-                    }
+                    validSquares.Add(potentialSquare);
                 }
             }
-            helpSquare = enPassant(currentLocation);
-            if (helpSquare != null)
+            potentialSquare = enPassant(currentLocation);
+            if (potentialSquare != null)
             {
-                validSquares.Add(helpSquare);
+                validSquares.Add(potentialSquare);
             }
             return validSquares;
         }
@@ -136,82 +101,62 @@ namespace SpackChess
         {
             return "";
         }
-        //todo: en-passant
-        // was braucht man dafür?
-        // - aktuelle Position des Bauers? Weiß: Linie 5; Schwarz: Linie 4
-        // - letzter Zug muss ein benachbarter Bauer gewesen sein, der einen Doppelzug gemacht hat
+       
         private Square enPassant(Square currentLocation)
         {            
-            Square possibleEnPassantSquare;
+            Square enemyLocation;
+            String neededPawnPreviousMove;
+
             if (currentLocation.OccupyingPiece.Alignment == Alignments.White && currentLocation.YCoordinate == 5)
             {
-                possibleEnPassantSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate - 1, currentLocation.YCoordinate);
-                if (possibleEnPassantSquare.OccupyingPiece != null)
+                enemyLocation = this.m_chessboard.GetSquare(currentLocation.XCoordinate - 1, currentLocation.YCoordinate);
+                if (enemyLocation != null)
                 {
-                    if (possibleEnPassantSquare.OccupyingPiece.Alignment != this.Alignment)
+                    neededPawnPreviousMove = this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate + 2).ToString() + "-" + enemyLocation.ToString();
+                    if (this.m_chessboard.LastMove == neededPawnPreviousMove)
                     {
-                        String possibleEnPassant = this.m_chessboard.GetSquare(possibleEnPassantSquare.XCoordinate, possibleEnPassantSquare.YCoordinate + 2).ToString() + "-" + possibleEnPassantSquare.ToString();
-                        if (this.m_chessboard.LastMove == possibleEnPassant)
-                        {
-                            return this.m_chessboard.GetSquare(possibleEnPassantSquare.XCoordinate, possibleEnPassantSquare.YCoordinate+1);
-                        }
-                        else return null;
+                        return this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate + 1);
                     }
-                    else return null;
                 }
-                
-                possibleEnPassantSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate + 1, currentLocation.YCoordinate);
-                if (possibleEnPassantSquare.OccupyingPiece != null)
+
+                enemyLocation = this.m_chessboard.GetSquare(currentLocation.XCoordinate + 1, currentLocation.YCoordinate);
+                if (enemyLocation != null)
                 {
-                    if (possibleEnPassantSquare.OccupyingPiece.Alignment != this.Alignment)
+                    neededPawnPreviousMove = this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate + 2).ToString() + "-" + enemyLocation.ToString();
+                    if (this.m_chessboard.LastMove == neededPawnPreviousMove)
                     {
-                        String possibleEnPassant = this.m_chessboard.GetSquare(possibleEnPassantSquare.XCoordinate, possibleEnPassantSquare.YCoordinate + 2).ToString() + "-" + possibleEnPassantSquare.ToString();
-                        if (this.m_chessboard.LastMove == possibleEnPassant)
-                        {
-                            return this.m_chessboard.GetSquare(possibleEnPassantSquare.XCoordinate, possibleEnPassantSquare.YCoordinate + 1);
-                        }
-                        else return null;
+                        return this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate + 1);
                     }
-                    else return null;
                 }
-                else return null;
+
+                return null;
             }
             else if (currentLocation.OccupyingPiece.Alignment == Alignments.Black && currentLocation.YCoordinate == 4)
             {
-                possibleEnPassantSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate - 1, currentLocation.YCoordinate);
-                if (possibleEnPassantSquare.OccupyingPiece != null)
+                enemyLocation = this.m_chessboard.GetSquare(currentLocation.XCoordinate - 1, currentLocation.YCoordinate);
+                if (enemyLocation != null)
                 {
-                    if (possibleEnPassantSquare.OccupyingPiece.Alignment != this.Alignment)
+                    neededPawnPreviousMove = this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate - 2).ToString() + "-" + enemyLocation.ToString();
+                    if (this.m_chessboard.LastMove == neededPawnPreviousMove)
                     {
-                        String possibleEnPassant = this.m_chessboard.GetSquare(possibleEnPassantSquare.XCoordinate, possibleEnPassantSquare.YCoordinate - 2).ToString() + "-" + possibleEnPassantSquare.ToString();
-                        if (this.m_chessboard.LastMove == possibleEnPassant)
-                        {
-                            return this.m_chessboard.GetSquare(possibleEnPassantSquare.XCoordinate, possibleEnPassantSquare.YCoordinate - 1);
-                        }
-                        else return null;
+                        return this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate - 1);
                     }
-                    else return null;
                 }
 
-                possibleEnPassantSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate + 1, currentLocation.YCoordinate);
-                if (possibleEnPassantSquare.OccupyingPiece != null)
+                enemyLocation = this.m_chessboard.GetSquare(currentLocation.XCoordinate + 1, currentLocation.YCoordinate);
+                if (enemyLocation != null)
                 {
-                    if (possibleEnPassantSquare.OccupyingPiece.Alignment != this.Alignment)
+                    neededPawnPreviousMove = this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate - 2).ToString() + "-" + enemyLocation.ToString();
+                    if (this.m_chessboard.LastMove == neededPawnPreviousMove)
                     {
-                        String possibleEnPassant = this.m_chessboard.GetSquare(possibleEnPassantSquare.XCoordinate, possibleEnPassantSquare.YCoordinate - 2).ToString() + "-" + possibleEnPassantSquare.ToString();
-                        if (this.m_chessboard.LastMove == possibleEnPassant)
-                        {
-                            return this.m_chessboard.GetSquare(possibleEnPassantSquare.XCoordinate, possibleEnPassantSquare.YCoordinate - 1);
-                        }
-                        else return null;
+                        return this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate - 1);
                     }
-                    else return null;
                 }
-                else return null;
+
+                return null;
             }
-            else return null;            
-        }
-
-        //todo: Bauer Umwandlung
+           
+            return null;            
+        }       
     }
 }

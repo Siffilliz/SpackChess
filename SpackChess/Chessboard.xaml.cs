@@ -21,11 +21,19 @@ namespace SpackChess
         private Square m_previousSelectedSquare;
         private List<Square> m_previousPossibleSquares = new List<Square>();
         private Alignments m_whosTurnIsIt = Alignments.White;
-        private string m_lastMove;
-
+      
         public List<Square> AllSquares
         {
             get { return m_allSqaures; }
+        }       
+        public Square GetSquare(int x, int y)
+        {
+            return this.m_allSqaures.FirstOrDefault(s => s.XCoordinate == x && s.YCoordinate == y);
+        }
+        public string LastMove
+        {
+            get;
+            set;
         }
         public Chessboard()
         {
@@ -46,11 +54,6 @@ namespace SpackChess
 
             this.ResetGame();
         }
-        public Square GetSquare(int x, int y)
-        {
-            return this.m_allSqaures.FirstOrDefault(s => s.XCoordinate == x && s.YCoordinate == y);
-        }
-
         /// <summary>
         /// Chessboard auf Standardanfangsaufstellung bringen
         /// </summary>
@@ -176,8 +179,7 @@ namespace SpackChess
                 {
                     possibleSquare.UnHighlight();
                 }
-
-
+                
                 m_previousSelectedSquare.OccupyingPiece.OccupiedSquare = selectedSquare;
                 m_previousSelectedSquare.GrSquare.Children.Clear();
                 selectedSquare.OccupyingPiece = m_previousSelectedSquare.OccupyingPiece;
@@ -194,9 +196,13 @@ namespace SpackChess
                         this.GetSquare(selectedSquare.XCoordinate, selectedSquare.YCoordinate + 1).OccupyingPiece = null;
                     }                    
                 }
+                else if (m_previousSelectedSquare.OccupyingPiece is Pawn && (selectedSquare.YCoordinate == 1 | selectedSquare.YCoordinate == 8))
+                {
+                    selectedSquare.OccupyingPiece = this.PromotedPiece(selectedSquare);  
+                }                
                 else
-                {    
-                    this.WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece);                   
+                {
+                    this.WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece);
                 }
                 m_previousSelectedSquare.OccupyingPiece.m_hasMoved = true;  
                 m_previousSelectedSquare.OccupyingPiece = null;
@@ -240,19 +246,69 @@ namespace SpackChess
             }           
         }
 
-        public string LastMove
+        private void WriteLastMove(Square startSquare, Square endSquare, Piece movedPiece, bool enPassant = false)
         {
-            get { return m_lastMove; }
-            set { m_lastMove = value; }
+            if (enPassant)
+            {
+                LastMove = movedPiece.ToString() + startSquare.ToString() + "x" + endSquare.ToString() + " e.p.";
+            }
+            else
+            {
+                LastMove = movedPiece.ToString() + startSquare.ToString() + "-" + endSquare.ToString();
+            }
+            
         }
 
-        public void WriteLastMove(Square startSquare, Square endSquare, Piece movedPiece)
+        private Piece PromotedPiece(Square selectedSquare)
         {
-            m_lastMove = movedPiece.ToString() + startSquare.ToString() + "-" + endSquare.ToString();
-        }
-        public void WriteLastMove(Square startSquare, Square endSquare, Piece movedPiece, bool enPassant)
-        {
-            m_lastMove = movedPiece.ToString() + startSquare.ToString() + "x" + endSquare.ToString() + " e.p.";
+            Promotion choosePromotion = new Promotion();
+            choosePromotion.ShowDialog();
+            Piece chosenPiece;
+            switch (choosePromotion.PromotedTo)
+            {
+                case ChessPieces.Queen:
+                    if (m_whosTurnIsIt == Alignments.White)
+                    {
+                        chosenPiece = new Queen(this, Alignments.White) { OccupiedSquare = selectedSquare };
+                    }
+                    else
+                    {
+                        chosenPiece = new Queen(this, Alignments.Black) { OccupiedSquare = selectedSquare };
+                    }
+                    return chosenPiece;
+                case ChessPieces.Rook:
+                    if (m_whosTurnIsIt == Alignments.White)
+                    {
+                        chosenPiece = new Rook(this, Alignments.White) { OccupiedSquare = selectedSquare };
+                    }
+                    else
+                    {
+                        chosenPiece = new Rook(this, Alignments.Black) { OccupiedSquare = selectedSquare };
+                    }
+                    return chosenPiece;
+                case ChessPieces.Knight:
+                    if (m_whosTurnIsIt == Alignments.White)
+                    {
+                        chosenPiece = new Knight(this, Alignments.White) { OccupiedSquare = selectedSquare };
+                    }
+                    else
+                    {
+                        chosenPiece = new Knight(this, Alignments.Black) { OccupiedSquare = selectedSquare };
+                    }
+                    return chosenPiece;
+                case ChessPieces.Bishop:
+                    if (m_whosTurnIsIt == Alignments.White)
+                    {
+                        chosenPiece = new Bishop(this, Alignments.White) { OccupiedSquare = selectedSquare };
+                    }
+                    else
+                    {
+                        chosenPiece = new Bishop(this, Alignments.Black) { OccupiedSquare = selectedSquare };
+                    }
+                    return chosenPiece;
+                default:
+                    return null;
+            }  
         }
     }
 }
