@@ -36,7 +36,7 @@ namespace SpackChess
             get;
             set;
         }
-        private Alignments WhosTurnIsIt
+        public Alignments WhosTurnIsIt
         {
             get { return m_whosTurnIsIt; }
             set
@@ -44,6 +44,10 @@ namespace SpackChess
                 m_whosTurnIsItNot = m_whosTurnIsIt;
                 m_whosTurnIsIt = value;                
             }
+        }
+        public Alignments WhosTurnIsItNot
+        {
+            get { return m_whosTurnIsItNot; }
         }
 
         public Chessboard()
@@ -225,7 +229,7 @@ namespace SpackChess
                 possibleCheckSquares = selectedSquare.OccupyingPiece.GetValidMoves(selectedSquare);
                 Square enemyKingLocation = this.getKingLocation(m_whosTurnIsItNot);
                 if (possibleCheckSquares.Contains(enemyKingLocation))
-                {
+                {                    
                     if (!this.SquareAttacked(selectedSquare, this.WhosTurnIsIt) && (enemyKingLocation.OccupyingPiece.GetValidMoves(enemyKingLocation).Count == 0))
                     {
                         MessageBox.Show("GAME OVER");

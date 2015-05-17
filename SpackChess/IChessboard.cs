@@ -21,9 +21,18 @@ namespace SpackChess
             set;
         }
 
-        //Boolean SquareAttacked(Square squareToExamine, Alignments attackingAlignment)
-        //{
+        Alignments WhosTurnIsIt
+        {
+            get;
+            set;
+        }
 
-        //}
+        Alignments WhosTurnIsItNot
+        {
+            get;
+        }
+
+        Boolean SquareAttacked(Square squareToExamine, Alignments attackingAlignment);
+               
     }
 }
