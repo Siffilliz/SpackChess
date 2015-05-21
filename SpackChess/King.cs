@@ -50,11 +50,7 @@ namespace SpackChess
                 {
                     if (potentialSquare.OccupyingPiece == null || potentialSquare.OccupyingPiece.Alignment != this.Alignment)
                     {
-                        //todo: Das Problem ist eher wenn eine Figur den König schach setzen will. Der König kann sich ganz normal bewegen.
-                        if (!this.m_chessboard.SquareAttacked(potentialSquare, this.m_chessboard.WhosTurnIsItNot))
-                        {
-                            validSquares.Add(potentialSquare);
-                        }
+                        validSquares.Add(potentialSquare);
                     }
                 }
             }
