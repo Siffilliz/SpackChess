@@ -40,7 +40,7 @@ namespace SpackChess
             bool canMoveUpRight = true;
             bool canMoveDownLeft = true;
             bool canMoveDownRight = true;
-
+         
             while (i <= 8)
             {
                 if (canMoveUpRight)

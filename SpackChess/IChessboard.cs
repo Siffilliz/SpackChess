@@ -33,6 +33,7 @@ namespace SpackChess
         }
 
         Boolean SquareAttacked(Square squareToExamine, Alignments attackingAlignment);
-               
+
+        void ResetGame();               
     }
 }

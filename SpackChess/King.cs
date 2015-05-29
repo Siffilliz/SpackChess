@@ -64,6 +64,7 @@ namespace SpackChess
 
         public Boolean SquareAttacked(Square squareToExamine)
         {
+            //todo: Evtl nochmal neu: Und weil du das noch nicht oft genug umgeschrieben hast: Du könntest auch einfach in jeder Richtung schauen ob die erste gegnerische Figur auf das Feld des Königs ziehen kann
             //Gerade Linie prüfen
             int i = 1;
             bool canMoveLeft = true;
@@ -263,6 +264,58 @@ namespace SpackChess
                 }
                 i++;
             }        
+
+            //Springer prüfen
+            int x = squareToExamine.XCoordinate;
+            int y = squareToExamine.YCoordinate;
+            // Zwei Listen für mögliche x und y Koordinaten werden erstellt. 
+            // Die Items der beiden Listen gehören zusammen, also possibleX[1] und possibleY[1]. So können mit einer for schleife alle Felder abgefragt werden. 
+            // Das erste Feld ist oben rechts neben dem aktuellen Feld. Reihenfolge dann im Uhrzeigersinn.
+            List<int> possibleX = new List<int>(8) { x + 1, x + 2, x + 2, x + 1, x - 1, x - 2, x - 2, x - 1 };
+            List<int> possibleY = new List<int>(8) { y + 2, y + 1, y - 1, y - 2, y - 2, y - 1, y + 1, y + 2 };
+
+            for (i = 0; i < 8; i++)
+            {
+                Square potentialSquare = this.m_chessboard.GetSquare(possibleX[i], possibleY[i]);
+
+                if (potentialSquare != null)
+                {
+                    if (potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment != this.Alignment && potentialSquare.OccupyingPiece is Knight)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            //Bauer prüfen           
+            if (this.Alignment == Alignments.White)
+            {
+                Square potentialSquare;                
+                potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate + 1, squareToExamine.YCoordinate + 1);
+                if (potentialSquare != null && potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment != this.Alignment)
+                {
+                    return true;
+                }
+                potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate - 1, squareToExamine.YCoordinate + 1);
+                if (potentialSquare != null && potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment != this.Alignment)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                Square potentialSquare;               
+                potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate + 1, squareToExamine.YCoordinate - 1);
+                if (potentialSquare != null && potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment != this.Alignment)
+                {
+                   return true;
+                }
+                potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate - 1, squareToExamine.YCoordinate - 1);
+                if (potentialSquare != null && potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment != this.Alignment)
+                {
+                    return true;
+                }
+            }
 
             return false;
         }

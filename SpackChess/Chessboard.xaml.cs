@@ -175,13 +175,21 @@ namespace SpackChess
                 }
             }
         }
-              
+              //todo: Meldung wenn Figur ausgewählt wird, die man nicht ziehen kann. Aber keine Nervmeldung
         private void Square_MouseUp(object sender, MouseButtonEventArgs e)
         {            
             Square selectedSquare = sender as Square;  
             
             if (m_previousSelectedSquare == selectedSquare)        // gleiches Feld wieder gewählt => mögliche Züge nicht mehr markieren
-            {
+            {   //todo: if (m_previousSelectedSquare == selectedSquare) ist übrigens auch nicht schön
+                //DrunkenSqrl: Was du machen solltest ist IEquatable implementieren und dann this.m_previousSelectedSquare.Equals(selectedSquare)
+                // weil ich nur auf die Referenz prüfe und nicht auf den Wert
+                // Darum eignetlich immer .Equals() oder object.ReferenceEquals() nutzen
+                // DrunkenSqrl: Bei == auf Objekten ist das Problem dass du nur auf die Referenz prüfst, was in dem Fall keine Rolle spielt weil es wirklich das gleiche Objekt ist
+                //DrunkenSqrl: Im Endeffekt ist es nicht explizit genug weil wenn sich jemand anderes den Code mal anschaut weiß der nicht ob du wirklich auf die Referenz oder auf den Wert prüfen wolltest
+                //DrunkenSqrl: Darum eignetlich immer .Equals() oder object.ReferenceEquals() nutzen
+                //DrunkenSqrl: Ersteres musst du halt überschreiben und selbst implementieren und am besten machst du das wenn du IEquatable implementierst, weil dann ist von außen auch klar dass du sie unterstützt
+
                 foreach (Square possibleSquare in m_previousPossibleSquares)
                 {
                     possibleSquare.UnHighlight();
@@ -211,7 +219,7 @@ namespace SpackChess
                 }
                 else if (m_previousSelectedSquare.OccupyingPiece is Pawn && (selectedSquare.YCoordinate == 1 | selectedSquare.YCoordinate == 8))
                 {
-                    selectedSquare.OccupyingPiece = this.PromotedPiece(selectedSquare);  
+                    m_previousSelectedSquare.OccupyingPiece = this.PromotedPiece(selectedSquare);  
                 }                
                 else
                 {
@@ -227,7 +235,7 @@ namespace SpackChess
                 m_previousSelectedSquare = null;
 
                 //todo: Abfrage für Schachmatt
-                Square enemyKingLocation = this.getKingLocation(m_whosTurnIsItNot);
+                Square enemyKingLocation = this.GetKingLocation(m_whosTurnIsItNot);
                 if (this.SquareAttacked(enemyKingLocation, this.WhosTurnIsIt))// && (enemyKingLocation.OccupyingPiece.GetValidMoves(enemyKingLocation).Count == 0))
                 {
                     enemyKingLocation.Highlight(true);
@@ -282,7 +290,7 @@ namespace SpackChess
             {
                 LastMove = movedPiece.ToString() + startSquare.ToString() + "-" + endSquare.ToString();
             }
-            
+            //todo: Promotion notieren!
         }
 
         private Piece PromotedPiece(Square selectedSquare)
@@ -293,51 +301,23 @@ namespace SpackChess
             switch (choosePromotion.PromotedTo)
             {
                 case ChessPieces.Queen:
-                    if (WhosTurnIsIt == Alignments.White)
-                    {
-                        chosenPiece = new Queen(this, Alignments.White) { OccupiedSquare = selectedSquare };
-                    }
-                    else
-                    {
-                        chosenPiece = new Queen(this, Alignments.Black) { OccupiedSquare = selectedSquare };
-                    }
+                    chosenPiece = new Queen(this, WhosTurnIsIt) { OccupiedSquare = selectedSquare };
                     return chosenPiece;
                 case ChessPieces.Rook:
-                    if (WhosTurnIsIt == Alignments.White)
-                    {
-                        chosenPiece = new Rook(this, Alignments.White) { OccupiedSquare = selectedSquare };
-                    }
-                    else
-                    {
-                        chosenPiece = new Rook(this, Alignments.Black) { OccupiedSquare = selectedSquare };
-                    }
+                    chosenPiece = new Rook(this, WhosTurnIsIt) { OccupiedSquare = selectedSquare };
                     return chosenPiece;
                 case ChessPieces.Knight:
-                    if (WhosTurnIsIt == Alignments.White)
-                    {
-                        chosenPiece = new Knight(this, Alignments.White) { OccupiedSquare = selectedSquare };
-                    }
-                    else
-                    {
-                        chosenPiece = new Knight(this, Alignments.Black) { OccupiedSquare = selectedSquare };
-                    }
+                    chosenPiece = new Knight(this, WhosTurnIsIt) { OccupiedSquare = selectedSquare };
                     return chosenPiece;
                 case ChessPieces.Bishop:
-                    if (WhosTurnIsIt == Alignments.White)
-                    {
-                        chosenPiece = new Bishop(this, Alignments.White) { OccupiedSquare = selectedSquare };
-                    }
-                    else
-                    {
-                        chosenPiece = new Bishop(this, Alignments.Black) { OccupiedSquare = selectedSquare };
-                    }
+                    chosenPiece = new Bishop(this, WhosTurnIsIt) { OccupiedSquare = selectedSquare };
                     return chosenPiece;
                 default:
                     return null;
             }  
         }
 
-        private Square getKingLocation(Alignments color)
+        private Square GetKingLocation(Alignments color)
         {            
             foreach (Square possibleSquare in this.m_allSqaures)
             {               
@@ -378,7 +358,7 @@ namespace SpackChess
 
         private Boolean verifyCheckMate(Square attackingSquare, Square attackedSquare)
         {
-
+            //todo: Schachmatt prüfen
 
             return false;
         }

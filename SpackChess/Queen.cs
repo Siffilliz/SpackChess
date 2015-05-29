@@ -40,13 +40,12 @@ namespace SpackChess
             bool canMoveUpRight = true;
             bool canMoveDownLeft = true;
             bool canMoveDownRight = true;
-            Square potentialSquare;
-
+          
             while (i <= 8)
             {
                 if (canMoveUpRight)
                 {
-                    potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate + i, currentLocation.YCoordinate + i);
+                    var potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate + i, currentLocation.YCoordinate + i);
                     if (potentialSquare != null)
                     {
                         if (potentialSquare.OccupyingPiece == null)
@@ -65,7 +64,7 @@ namespace SpackChess
                 }
                 if (canMoveUpLeft)
                 {
-                    potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate - i, currentLocation.YCoordinate + i);
+                    var potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate - i, currentLocation.YCoordinate + i);
                     if (potentialSquare != null)
                     {
                         if (potentialSquare.OccupyingPiece == null)
@@ -84,7 +83,7 @@ namespace SpackChess
                 }
                 if (canMoveDownRight)
                 {
-                    potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate + i, currentLocation.YCoordinate - i);
+                    var potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate + i, currentLocation.YCoordinate - i);
                     if (potentialSquare != null)
                     {
                         if (potentialSquare.OccupyingPiece == null)
@@ -103,7 +102,7 @@ namespace SpackChess
                 }
                 if (canMoveDownLeft)
                 {
-                    potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate - i, currentLocation.YCoordinate - i);
+                    var potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate - i, currentLocation.YCoordinate - i);
                     if (potentialSquare != null)
                     {
                         if (potentialSquare.OccupyingPiece == null)
@@ -122,86 +121,93 @@ namespace SpackChess
                 }
                 i++;
             }
-            
-            //Zusätzlich die Abfragen von Rook
-            int x = currentLocation.XCoordinate;
-            int y = currentLocation.YCoordinate;
-            
-            // Richtungen können mittels 4 for Schleifen durchlaufen werden, Startwert ist die aktuelle Position, Zähler einmal +1, einmal -1
-            // Ist ein Feld belegt, kann die Zählung abgebrochen werden 
-            // in x Richtung nach rechts
-            for (i = x + 1; i <= 8; i++)            // prüfen was die for Schleife macht, wenn startkoordinate = 8 ist.
+
+            i = 1;
+            bool canMoveLeft = true;
+            bool canMoveRight = true;
+            bool canMoveUp = true;
+            bool canMoveDown = true;
+
+            while (i <= 8)
             {
-
-                potentialSquare = this.m_chessboard.GetSquare(i, y);
-
-                if (potentialSquare.OccupyingPiece == null)
+                if (canMoveRight)
                 {
-                    validSquares.Add(potentialSquare);
-                }
-                else
-                {
-                    if (potentialSquare.OccupyingPiece.Alignment != this.Alignment)
+                    var potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate + i, currentLocation.YCoordinate);
+                    if (potentialSquare != null)
                     {
-                        validSquares.Add(potentialSquare);
+                        if (potentialSquare.OccupyingPiece == null)
+                        {
+                            validSquares.Add(potentialSquare);
+                        }
+                        else
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment)
+                            {
+                                validSquares.Add(potentialSquare);
+                            }
+                            canMoveRight = false;
+                        }
                     }
-                    break;
                 }
-            }
-            // in x-Richtung nach links
-            for (i = x - 1; i >= 1; i--)          // prüfen was die for Schleife macht, wenn startkoordinate = 1 ist.
-            {
-                potentialSquare = this.m_chessboard.GetSquare(i, y);
-
-                if (potentialSquare.OccupyingPiece == null)
+                if (canMoveLeft)
                 {
-                    validSquares.Add(potentialSquare);
-                }
-                else
-                {
-                    if (potentialSquare.OccupyingPiece.Alignment != this.Alignment)
+                    var potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate - i, currentLocation.YCoordinate);
+                    if (potentialSquare != null)
                     {
-                        validSquares.Add(potentialSquare);
+                        if (potentialSquare.OccupyingPiece == null)
+                        {
+                            validSquares.Add(potentialSquare);
+                        }
+                        else
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment)
+                            {
+                                validSquares.Add(potentialSquare);
+                            }
+                            canMoveLeft = false;
+                        }
                     }
-                    break;
                 }
-            }
-            // in y-Richtung nach oben
-            for (i = y + 1; i <= 8; i++)            // prüfen was die for Schleife macht, wenn startkoordinate = 8 ist.
-            {
-                potentialSquare = this.m_chessboard.GetSquare(x, i);
-
-                if (potentialSquare.OccupyingPiece == null)
+                if (canMoveDown)
                 {
-                    validSquares.Add(potentialSquare);
-                }
-                else
-                {
-                    if (potentialSquare.OccupyingPiece.Alignment != this.Alignment)
+                    var potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate, currentLocation.YCoordinate - i);
+                    if (potentialSquare != null)
                     {
-                        validSquares.Add(potentialSquare);
+                        if (potentialSquare.OccupyingPiece == null)
+                        {
+                            validSquares.Add(potentialSquare);
+                        }
+                        else
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment)
+                            {
+                                validSquares.Add(potentialSquare);
+                            }
+                            canMoveDown = false;
+                        }
                     }
-                    break;
                 }
-            }
-            // in y-Richtung nach unten
-            for (i = y - 1; i >= 1; i--)          // prüfen was die for Schleife macht, wenn startkoordinate = 1 ist.
-            {
-                potentialSquare = this.m_chessboard.GetSquare(x, i);
-
-                if (potentialSquare.OccupyingPiece == null)
+                if (canMoveUp)
                 {
-                    validSquares.Add(potentialSquare);
-                }
-                else
-                {
-                    if (potentialSquare.OccupyingPiece.Alignment != this.Alignment)
+                    var potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate, currentLocation.YCoordinate + i);
+                    if (potentialSquare != null)
                     {
-                        validSquares.Add(potentialSquare);
+                        if (potentialSquare.OccupyingPiece == null)
+                        {
+                            validSquares.Add(potentialSquare);
+                        }
+                        else
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment)
+                            {
+                                validSquares.Add(potentialSquare);
+                            }
+                            canMoveUp = false;
+                        }
                     }
-                    break;
                 }
-            }
+                i++;
+            }     
 
             return validSquares;
         }
