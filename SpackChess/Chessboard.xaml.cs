@@ -254,25 +254,16 @@ namespace SpackChess
                         List<Square> validMoves;                                     
                         validMoves = selectedSquare.OccupyingPiece.GetValidMoves(selectedSquare);
                         foreach (Square possibleSquare in validMoves)
-                        {
-                            if (selectedSquare.OccupyingPiece is King)
-                            {   //todo: Zusätzliche Abfrage, falls ein Feld geschlagen werden soll. Beim Prüfen der Bedrohung für dieses Feld, wird es nicht mit in Betracht gezogen, 
-                                //      da ja eine eigene Figur drauf steht. D.h. wenn der König eine Figur auf dem Feld schlagen will, dieses Feld aber z.B. von der Dame bedroht wird,
-                                //      fällt das im Programm nicht auf => Abfrage ob Feld von Gegner besetzt => Wenn ja, Feld "temporär" mit eigenem König besetzen => Bedrohung dieses
-                                //      Feldes prüfen => Feld als Zug zulassen oder auch nicht => Figuren wieder den ursprünglichen Feldern zuweisen...
-                                //todo: Es muss geprüft werden, ob das Wegziehen einer Figur ein Schach verursacht => Figur darf nicht weggezogen werden. Vorgehen wie im Beispiel drüber
-                                //todo: Rochade einbauen. Abfrage ob Rochade druchgeführt wurde (König zieht mehr als ein Feld in x-Richtung) beim tatsächlichen Zug.
-                                if (!this.SquareAttacked(possibleSquare, this.m_whosTurnIsItNot))
-                                {
-                                    possibleSquare.Highlight();
-                                    m_previousPossibleSquares.Add(possibleSquare);
-                                }                              
-                            }
-                            else
-                            {
-                                possibleSquare.Highlight();
-                                m_previousPossibleSquares.Add(possibleSquare);
-                            }
+                        {                          
+                           //todo: Zusätzliche Abfrage, falls ein Feld geschlagen werden soll. Beim Prüfen der Bedrohung für dieses Feld, wird es nicht mit in Betracht gezogen, 
+                            //      da ja eine eigene Figur drauf steht. D.h. wenn der König eine Figur auf dem Feld schlagen will, dieses Feld aber z.B. von der Dame bedroht wird,
+                            //      fällt das im Programm nicht auf => Abfrage ob Feld von Gegner besetzt => Wenn ja, Feld "temporär" mit eigenem König besetzen => Bedrohung dieses
+                            //      Feldes prüfen => Feld als Zug zulassen oder auch nicht => Figuren wieder den ursprünglichen Feldern zuweisen...
+                            //todo: Es muss geprüft werden, ob das Wegziehen einer Figur ein Schach verursacht => Figur darf nicht weggezogen werden. Vorgehen wie im Beispiel drüber
+                            //todo: Rochade einbauen. Abfrage ob Rochade druchgeführt wurde (König zieht mehr als ein Feld in x-Richtung) beim tatsächlichen Zug.
+                               
+                            possibleSquare.Highlight();
+                            m_previousPossibleSquares.Add(possibleSquare);
                         }
 
                         m_previousSelectedSquare = selectedSquare;

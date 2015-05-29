@@ -48,7 +48,7 @@ namespace SpackChess
 
                 if (potentialSquare != null)
                 {
-                    if (potentialSquare.OccupyingPiece == null || potentialSquare.OccupyingPiece.Alignment != this.Alignment)
+                    if ((potentialSquare.OccupyingPiece == null || potentialSquare.OccupyingPiece.Alignment != this.Alignment) && !this.SquareAttacked(potentialSquare))
                     {
                         validSquares.Add(potentialSquare);
                     }
@@ -60,6 +60,211 @@ namespace SpackChess
         public override string ToString()
         {
             return "K";
+        }
+
+        public Boolean SquareAttacked(Square squareToExamine)
+        {
+            //Gerade Linie prüfen
+            int i = 1;
+            bool canMoveLeft = true;
+            bool canMoveRight = true;
+            bool canMoveUp = true;
+            bool canMoveDown = true;
+
+            while (i <= 8)
+            {
+                if (canMoveRight)
+                {
+                    var potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate + i, squareToExamine.YCoordinate);
+                    if (potentialSquare != null)
+                    {
+                        if (potentialSquare.OccupyingPiece != null)
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
+                            {
+                                return true;     
+                            }
+                            else
+                            {
+                                canMoveRight = false;  
+                            }
+                        }                                                
+                    }
+                    else 
+                    {
+                        canMoveRight = false;  
+                    }
+                }
+                if (canMoveLeft)
+                {
+                    var potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate - i, squareToExamine.YCoordinate);
+                    if (potentialSquare != null)
+                    {
+                        if (potentialSquare.OccupyingPiece != null)
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                canMoveLeft = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        canMoveLeft = false;
+                    }
+                }
+                if (canMoveUp)
+                {
+                    var potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate, squareToExamine.YCoordinate + i);
+                    if (potentialSquare != null)
+                    {
+                        if (potentialSquare.OccupyingPiece != null)
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                canMoveUp = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        canMoveUp = false;
+                    }
+                }
+                if (canMoveDown)
+                {
+                    var potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate, squareToExamine.YCoordinate - i);
+                    if (potentialSquare != null)
+                    {
+                        if (potentialSquare.OccupyingPiece != null)
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                canMoveDown = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        canMoveDown = false;
+                    }
+                }
+                i++;
+            }        
+
+            //Diagonale prüfen
+            i = 1;
+            bool canMoveUpLeft = true;
+            bool canMoveUpRight = true;
+            bool canMoveDownLeft = true;
+            bool canMoveDownRight = true;
+
+            while (i <= 8)
+            {
+                if (canMoveUpRight)
+                {
+                    var potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate + i, squareToExamine.YCoordinate + i);
+                    if (potentialSquare != null)
+                    {
+                        if (potentialSquare.OccupyingPiece != null)
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                canMoveUpRight = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        canMoveUpRight = false;
+                    }
+                }
+                if (canMoveUpLeft)
+                {
+                    var potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate - i, squareToExamine.YCoordinate + i);
+                    if (potentialSquare != null)
+                    {
+                        if (potentialSquare.OccupyingPiece != null)
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                canMoveUpLeft = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        canMoveUpLeft = false;
+                    }
+                }
+                if (canMoveDownRight)
+                {
+                    var potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate + i, squareToExamine.YCoordinate - i);
+                    if (potentialSquare != null)
+                    {
+                        if (potentialSquare.OccupyingPiece != null)
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                canMoveDownRight = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        canMoveDownRight = false;
+                    }
+                }
+                if (canMoveDownLeft)
+                {
+                    var potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate - i, squareToExamine.YCoordinate - i);
+                    if (potentialSquare != null)
+                    {
+                        if (potentialSquare.OccupyingPiece != null)
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                canMoveDownLeft = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        canMoveDownLeft = false;
+                    }
+                }
+                i++;
+            }        
+
+            return false;
         }
     }
 }
