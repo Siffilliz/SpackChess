@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SpackChess
 {
-    class Pawn : Piece
+    class Pawn : PieceBase
     {
         /// <summary>
         /// Bauer darf ein Feld nach vorne wenn er sich nicht bewegt hat. Als ersten Zug zwei.

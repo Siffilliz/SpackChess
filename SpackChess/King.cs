@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SpackChess
 {
-    class King : Piece
+    class King : PieceBase
     {
         public King(IChessboard chessboard, Alignments color)
             : base(chessboard, color)
@@ -64,8 +64,7 @@ namespace SpackChess
 
         public Boolean SquareAttacked(Square squareToExamine)
         {
-            //todo: Evtl nochmal neu: Und weil du das noch nicht oft genug umgeschrieben hast: Du könntest auch einfach in jeder Richtung schauen ob die erste gegnerische Figur auf das Feld des Königs ziehen kann
-            //Gerade Linie prüfen
+           //Gerade Linie prüfen
             int i = 1;
             bool canMoveLeft = true;
             bool canMoveRight = true;
@@ -181,7 +180,7 @@ namespace SpackChess
                     {
                         if (potentialSquare.OccupyingPiece != null)
                         {
-                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
+                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Bishop || potentialSquare.OccupyingPiece is Queen))
                             {
                                 return true;
                             }
@@ -203,7 +202,7 @@ namespace SpackChess
                     {
                         if (potentialSquare.OccupyingPiece != null)
                         {
-                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
+                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Bishop || potentialSquare.OccupyingPiece is Queen))
                             {
                                 return true;
                             }
@@ -225,7 +224,7 @@ namespace SpackChess
                     {
                         if (potentialSquare.OccupyingPiece != null)
                         {
-                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
+                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Bishop || potentialSquare.OccupyingPiece is Queen))
                             {
                                 return true;
                             }
@@ -247,7 +246,7 @@ namespace SpackChess
                     {
                         if (potentialSquare.OccupyingPiece != null)
                         {
-                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
+                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Bishop || potentialSquare.OccupyingPiece is Queen))
                             {
                                 return true;
                             }

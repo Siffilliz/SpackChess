@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SpackChess
 {
-    class Knight : Piece
+    class Knight : PieceBase
     {
         public Knight(IChessboard chessboard, Alignments color)
             : base(chessboard, color)

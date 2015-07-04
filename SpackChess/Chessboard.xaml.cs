@@ -267,7 +267,7 @@ namespace SpackChess
                             //      da ja eine eigene Figur drauf steht. D.h. wenn der König eine Figur auf dem Feld schlagen will, dieses Feld aber z.B. von der Dame bedroht wird,
                             //      fällt das im Programm nicht auf => Abfrage ob Feld von Gegner besetzt => Wenn ja, Feld "temporär" mit eigenem König besetzen => Bedrohung dieses
                             //      Feldes prüfen => Feld als Zug zulassen oder auch nicht => Figuren wieder den ursprünglichen Feldern zuweisen...
-                            //todo: Es muss geprüft werden, ob das Wegziehen einer Figur ein Schach verursacht => Figur darf nicht weggezogen werden. Vorgehen wie im Beispiel drüber
+                            //todo: Es muss geprüft werden, ob das Wegziehen einer Figur ein Schach verursacht => Figur darf nicht weggezogen werden, außer sie schlägt die schachgebende figur bzw zieht dorthin, wo immer noch kein schach ist. Vorgehen wie im Beispiel drüber, z
                             //todo: Rochade einbauen. Abfrage ob Rochade druchgeführt wurde (König zieht mehr als ein Feld in x-Richtung) beim tatsächlichen Zug.
                                
                             possibleSquare.Highlight();
@@ -280,7 +280,7 @@ namespace SpackChess
             }           
         }
 
-        private void WriteLastMove(Square startSquare, Square endSquare, Piece movedPiece, bool enPassant = false)
+        private void WriteLastMove(Square startSquare, Square endSquare, PieceBase movedPiece, bool enPassant = false)
         {
             if (enPassant)
             {
@@ -293,11 +293,11 @@ namespace SpackChess
             //todo: Promotion notieren!
         }
 
-        private Piece PromotedPiece(Square selectedSquare)
+        private PieceBase PromotedPiece(Square selectedSquare)
         {
             Promotion choosePromotion = new Promotion();
             choosePromotion.ShowDialog();
-            Piece chosenPiece;
+            PieceBase chosenPiece;
             switch (choosePromotion.PromotedTo)
             {
                 case ChessPieces.Queen:
@@ -331,7 +331,7 @@ namespace SpackChess
 
         public Boolean SquareAttacked(Square squareToExamine, Alignments attackingAlignment)
         {
-            var allEnemyPiecesOnChessboard = new List<Piece>();            
+            var allEnemyPiecesOnChessboard = new List<PieceBase>();            
             foreach (Square possibleSquare in this.m_allSqaures)
             {
                 if (possibleSquare.OccupyingPiece != null && possibleSquare.OccupyingPiece.Alignment == attackingAlignment)
@@ -340,7 +340,7 @@ namespace SpackChess
                 }
             }
             
-            foreach (Piece enemyPiece in allEnemyPiecesOnChessboard)
+            foreach (PieceBase enemyPiece in allEnemyPiecesOnChessboard)
             {
                 var enemyCheckedSquares = new List<Square>();
                 enemyCheckedSquares = enemyPiece.GetValidMoves(enemyPiece.OccupiedSquare);

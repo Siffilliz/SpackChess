@@ -20,7 +20,7 @@ namespace SpackChess
     /// </summary>
     public partial class Square : UserControl
     {
-        private Piece m_occupyingPiece;
+        private PieceBase m_occupyingPiece;
         /// <summary>
         /// Gets or sets the value of the XCoordinate.
         /// </summary>
@@ -39,7 +39,7 @@ namespace SpackChess
             get;
         }
 
-        public Piece OccupyingPiece
+        public PieceBase OccupyingPiece
         {
             get
             {
