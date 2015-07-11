@@ -178,13 +178,11 @@ namespace SpackChess
               //todo: Meldung wenn Figur ausgewählt wird, die man nicht ziehen kann. Aber keine Nervmeldung
         private void Square_MouseUp(object sender, MouseButtonEventArgs e)
         {            
-            Square selectedSquare = sender as Square;  
-            
-            if (m_previousSelectedSquare == selectedSquare)        // gleiches Feld wieder gewählt => mögliche Züge nicht mehr markieren
-            {   //todo: if (m_previousSelectedSquare == selectedSquare) ist übrigens auch nicht schön
-                //DrunkenSqrl: Was du machen solltest ist IEquatable implementieren und dann this.m_previousSelectedSquare.Equals(selectedSquare)
-                // weil ich nur auf die Referenz prüfe und nicht auf den Wert
-                // Darum eignetlich immer .Equals() oder object.ReferenceEquals() nutzen
+            Square selectedSquare = sender as Square;
+
+            if (selectedSquare.Equals(m_previousSelectedSquare))       // gleiches Feld wieder gewählt => mögliche Züge nicht mehr markieren
+            {   //todo: if (m_previousSelectedSquare == selectedSquare) ist übrigens auch nicht schön, weil nur auf Referenz und nicht auf Wert verglichen wird
+                //DrunkenSqrl: Was du machen solltest ist IEquatable implementieren und dann this.m_previousSelectedSquare.Equals(selectedSquare) <<<== Falschrum Spack!! und ohne this
                 // DrunkenSqrl: Bei == auf Objekten ist das Problem dass du nur auf die Referenz prüfst, was in dem Fall keine Rolle spielt weil es wirklich das gleiche Objekt ist
                 //DrunkenSqrl: Im Endeffekt ist es nicht explizit genug weil wenn sich jemand anderes den Code mal anschaut weiß der nicht ob du wirklich auf die Referenz oder auf den Wert prüfen wolltest
                 //DrunkenSqrl: Darum eignetlich immer .Equals() oder object.ReferenceEquals() nutzen
