@@ -1,0 +1,8 @@
+﻿<Window x:Class="SpackChess.SplashNoMoves"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SplashNoMoves" Height="60" Width="200" Background="Red" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" WindowStyle="None">
+    <Grid>
+        <Label Foreground="Yellow" FontSize="14">Kein gültiger Zug möglich...</Label>
+    </Grid>
+</Window>

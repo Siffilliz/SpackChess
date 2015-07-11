@@ -65,6 +65,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="SplashNoMoves.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Square.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -95,6 +99,9 @@
     </Compile>
     <Compile Include="Queen.cs" />
     <Compile Include="Rook.cs" />
+    <Compile Include="SplashNoMoves.xaml.cs">
+      <DependentUpon>SplashNoMoves.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Square.xaml.cs">
       <DependentUpon>Square.xaml</DependentUpon>
     </Compile>

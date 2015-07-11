@@ -175,19 +175,13 @@ namespace SpackChess
                 }
             }
         }
-              //todo: Meldung wenn Figur ausgewählt wird, die man nicht ziehen kann. Aber keine Nervmeldung
+         
         private void Square_MouseUp(object sender, MouseButtonEventArgs e)
         {            
             Square selectedSquare = sender as Square;
 
             if (selectedSquare.Equals(m_previousSelectedSquare))       // gleiches Feld wieder gewählt => mögliche Züge nicht mehr markieren
-            {   //todo: if (m_previousSelectedSquare == selectedSquare) ist übrigens auch nicht schön, weil nur auf Referenz und nicht auf Wert verglichen wird
-                //DrunkenSqrl: Was du machen solltest ist IEquatable implementieren und dann this.m_previousSelectedSquare.Equals(selectedSquare) <<<== Falschrum Spack!! und ohne this
-                // DrunkenSqrl: Bei == auf Objekten ist das Problem dass du nur auf die Referenz prüfst, was in dem Fall keine Rolle spielt weil es wirklich das gleiche Objekt ist
-                //DrunkenSqrl: Im Endeffekt ist es nicht explizit genug weil wenn sich jemand anderes den Code mal anschaut weiß der nicht ob du wirklich auf die Referenz oder auf den Wert prüfen wolltest
-                //DrunkenSqrl: Darum eignetlich immer .Equals() oder object.ReferenceEquals() nutzen
-                //DrunkenSqrl: Ersteres musst du halt überschreiben und selbst implementieren und am besten machst du das wenn du IEquatable implementierst, weil dann ist von außen auch klar dass du sie unterstützt
-
+            {   
                 foreach (Square possibleSquare in m_previousPossibleSquares)
                 {
                     possibleSquare.UnHighlight();
@@ -214,7 +208,7 @@ namespace SpackChess
                     {
                         this.GetSquare(selectedSquare.XCoordinate, selectedSquare.YCoordinate + 1).OccupyingPiece = null;
                     }                    
-                }
+                }   //else if Umwandlung
                 else if (m_previousSelectedSquare.OccupyingPiece is Pawn && (selectedSquare.YCoordinate == 1 | selectedSquare.YCoordinate == 8))
                 {
                     m_previousSelectedSquare.OccupyingPiece = this.PromotedPiece(selectedSquare);  
@@ -259,6 +253,13 @@ namespace SpackChess
                         // mögliche Züge ermitteln
                         List<Square> validMoves;                                     
                         validMoves = selectedSquare.OccupyingPiece.GetValidMoves(selectedSquare);
+
+                        // Meldung, dass kein gültiger Zug vorhanden ist
+                        if (validMoves.Count == 0)
+                        {
+                            SplashNoMoves();
+                        }
+
                         foreach (Square possibleSquare in validMoves)
                         {                          
                            //todo: Zusätzliche Abfrage, falls ein Feld geschlagen werden soll. Beim Prüfen der Bedrohung für dieses Feld, wird es nicht mit in Betracht gezogen, 
@@ -288,7 +289,7 @@ namespace SpackChess
             {
                 LastMove = movedPiece.ToString() + startSquare.ToString() + "-" + endSquare.ToString();
             }
-            //todo: Promotion notieren!
+            //todo: Promotion notieren, Notation überhaupt richtig stellen. Dann permament speichern. Außerdem Mechanismus zum Einlesen überlegen, dann könnten gespeicherte Spiele fortgesetzt werden.
         }
 
         private PieceBase PromotedPiece(Square selectedSquare)
@@ -360,5 +361,21 @@ namespace SpackChess
 
             return false;
         }
+
+        public void SplashNoMoves()
+        {
+            SplashNoMoves snm = new SplashNoMoves();
+            snm.Show();
+            delay(500);
+            snm.Close();
+            snm = null;
+        }
+
+        private void delay(int zeit)
+        {
+            int zeit1 = System.Environment.TickCount;
+            while ((System.Environment.TickCount - zeit1) < zeit) ;
+        }
+
     }
 }

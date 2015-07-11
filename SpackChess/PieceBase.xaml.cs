@@ -73,7 +73,7 @@ namespace SpackChess
         public abstract override string ToString();
     }
 
-    /*
+    /*todo:Mechanismus
         DrunkenSqrl: Am einfachsten wäre es glaub ich wenn du dir nen Mechanismus überlegst mit dem zu Züge "simulieren" kannst und dann einfach schaust ob die ziehende Partei nach dem Zug im Schach steht
         vigh: ja, an sowas hab ich auch schon gedacht
         vigh: also wirklich!
