@@ -32,7 +32,7 @@ namespace SpackChess
             get;
         }
         
-        Boolean IsKingThreatened(Alignment color);
+        bool IsKingThreatened(Alignment color);
 
         Square GetKingLocation(Alignment color);
 

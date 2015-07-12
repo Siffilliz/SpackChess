@@ -48,7 +48,10 @@ namespace SpackChess
         }
         public Alignment WhosTurnIsItNot
         {
-            get { return m_whosTurnIsItNot; }
+            get 
+            { 
+                return m_whosTurnIsItNot; 
+            }
         }
 
         public Chessboard()
@@ -217,12 +220,7 @@ namespace SpackChess
                 {
                     this.WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece);
                 }
-               
-                //m_previousSelectedSquare.GrSquare.Children.Clear();
-                //selectedSquare.OccupyingPiece = m_previousSelectedSquare.OccupyingPiece;
-                //selectedSquare.OccupyingPiece.OccupiedSquare = selectedSquare;
-                //selectedSquare.OccupyingPiece.m_hasMoved = true;  
-                //m_previousSelectedSquare.OccupyingPiece = null;
+                             
                 MovePiece(m_previousSelectedSquare, selectedSquare);
                 m_previousPossibleSquares.Clear();
                 m_previousSelectedSquare = null;
@@ -340,14 +338,14 @@ namespace SpackChess
             return null;
         }
                 
-        private Boolean verifyCheckMate(Square attackingSquare, Square attackedSquare)
+        private bool verifyCheckMate(Square attackingSquare, Square attackedSquare)
         {
             //todo: Schachmatt prüfen
 
             return false;
         }
 
-        public Boolean IsKingThreatened(Alignment color)
+        public bool IsKingThreatened(Alignment color)
         {
             //Gerade Linie prüfen
             int i = 1;
