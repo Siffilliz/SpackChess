@@ -8,12 +8,12 @@ namespace SpackChess
 {
     class Queen : PieceBase
     {
-        public Queen(IChessboard chessboard, Alignments color)
+        public Queen(IChessboard chessboard, Alignment color)
             : base(chessboard, color)
         {
             m_graphic = new System.Windows.Controls.Image();
 
-            if (this.Alignment == Alignments.Black)
+            if (this.Alignment == Alignment.Black)
             {
                 m_graphic.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/Pictures/QB.png"));
             }
@@ -207,7 +207,9 @@ namespace SpackChess
                     }
                 }
                 i++;
-            }     
+            }
+
+            base.SimulateMove(validSquares);
 
             return validSquares;
         }

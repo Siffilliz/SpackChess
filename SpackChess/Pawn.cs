@@ -16,12 +16,12 @@ namespace SpackChess
         /// 
         
 
-        public Pawn(IChessboard chessboard, Alignments color)  
+        public Pawn(IChessboard chessboard, Alignment color)  
             : base(chessboard, color)
         {
             m_graphic = new System.Windows.Controls.Image();
 
-            if (this.Alignment == Alignments.Black)
+            if (this.Alignment == Alignment.Black)
             {
                 m_graphic.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/Pictures/PB.png"));
             }
@@ -37,7 +37,7 @@ namespace SpackChess
         {
             var validSquares = new List<Square>();
             Square potentialSquare;
-            if (currentLocation.OccupyingPiece.Alignment == Alignments.White)
+            if (currentLocation.OccupyingPiece.Alignment == Alignment.White)
             {
                 potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate, currentLocation.YCoordinate + 2);               
                 if (potentialSquare != null && potentialSquare.OccupyingPiece == null && m_hasMoved == false)
@@ -94,6 +94,9 @@ namespace SpackChess
             {
                 validSquares.Add(potentialSquare);
             }
+
+            base.SimulateMove(validSquares);
+
             return validSquares;
         }
         
@@ -105,9 +108,9 @@ namespace SpackChess
         private Square enPassant(Square currentLocation)
         {            
             Square enemyLocation;
-            String neededPawnPreviousMove;
+            string neededPawnPreviousMove;
 
-            if (currentLocation.OccupyingPiece.Alignment == Alignments.White && currentLocation.YCoordinate == 5)
+            if (currentLocation.OccupyingPiece.Alignment == Alignment.White && currentLocation.YCoordinate == 5)
             {
                 enemyLocation = this.m_chessboard.GetSquare(currentLocation.XCoordinate - 1, currentLocation.YCoordinate);
                 if (enemyLocation != null)
@@ -131,7 +134,7 @@ namespace SpackChess
 
                 return null;
             }
-            else if (currentLocation.OccupyingPiece.Alignment == Alignments.Black && currentLocation.YCoordinate == 4)
+            else if (currentLocation.OccupyingPiece.Alignment == Alignment.Black && currentLocation.YCoordinate == 4)
             {
                 enemyLocation = this.m_chessboard.GetSquare(currentLocation.XCoordinate - 1, currentLocation.YCoordinate);
                 if (enemyLocation != null)

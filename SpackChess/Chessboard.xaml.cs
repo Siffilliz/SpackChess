@@ -20,9 +20,9 @@ namespace SpackChess
         private List<Square> m_allSqaures = new List<Square>();
         private Square m_previousSelectedSquare;
         private List<Square> m_previousPossibleSquares = new List<Square>();
-        private Alignments m_whosTurnIsIt = Alignments.White;
-        private Alignments m_whosTurnIsItNot = Alignments.Black;
-        private Alignments m_whoIsChecked;
+        private Alignment m_whosTurnIsIt = Alignment.White;
+        private Alignment m_whosTurnIsItNot = Alignment.Black;
+        private Alignment m_whoIsChecked;
       
         public List<Square> AllSquares
         {
@@ -37,7 +37,7 @@ namespace SpackChess
             get;
             set;
         }
-        public Alignments WhosTurnIsIt
+        public Alignment WhosTurnIsIt
         {
             get { return m_whosTurnIsIt; }
             set
@@ -46,7 +46,7 @@ namespace SpackChess
                 m_whosTurnIsIt = value;                
             }
         }
-        public Alignments WhosTurnIsItNot
+        public Alignment WhosTurnIsItNot
         {
             get { return m_whosTurnIsItNot; }
         }
@@ -90,11 +90,11 @@ namespace SpackChess
                                         Rook newRook;
                                         if (squareToOccupy.YCoordinate == 1)
                                         {
-                                            newRook = new Rook(this, Alignments.White) { OccupiedSquare = squareToOccupy };                                            
+                                            newRook = new Rook(this, Alignment.White) { OccupiedSquare = squareToOccupy };                                            
                                         }
                                         else // if (squareToOccupy.YCoordinate == 8)
                                         {
-                                            newRook = new Rook(this, Alignments.Black) { OccupiedSquare = squareToOccupy };
+                                            newRook = new Rook(this, Alignment.Black) { OccupiedSquare = squareToOccupy };
                                         }
                                         squareToOccupy.OccupyingPiece = newRook;
                                         break;
@@ -105,11 +105,11 @@ namespace SpackChess
                                         Knight newKnight;
                                         if (squareToOccupy.YCoordinate == 1)
                                         {
-                                            newKnight = new Knight(this, Alignments.White) { OccupiedSquare = squareToOccupy };
+                                            newKnight = new Knight(this, Alignment.White) { OccupiedSquare = squareToOccupy };
                                         }
                                         else // if (squareToOccupy.YCoordinate == 8)
                                         {
-                                            newKnight = new Knight(this, Alignments.Black) { OccupiedSquare = squareToOccupy };
+                                            newKnight = new Knight(this, Alignment.Black) { OccupiedSquare = squareToOccupy };
                                         }
                                         squareToOccupy.OccupyingPiece = newKnight;                              
                                         break;
@@ -120,11 +120,11 @@ namespace SpackChess
                                         Bishop newBishop;
                                         if (squareToOccupy.YCoordinate == 1)
                                         {
-                                            newBishop = new Bishop(this, Alignments.White) { OccupiedSquare = squareToOccupy };
+                                            newBishop = new Bishop(this, Alignment.White) { OccupiedSquare = squareToOccupy };
                                         }
                                         else // if (squareToOccupy.YCoordinate == 8)
                                         {
-                                            newBishop = new Bishop(this, Alignments.Black) { OccupiedSquare = squareToOccupy };
+                                            newBishop = new Bishop(this, Alignment.Black) { OccupiedSquare = squareToOccupy };
                                         }
                                         squareToOccupy.OccupyingPiece = newBishop;
                                         break;
@@ -134,11 +134,11 @@ namespace SpackChess
                                         King newKing;
                                         if (squareToOccupy.YCoordinate == 1)
                                         {
-                                            newKing = new King(this, Alignments.White) { OccupiedSquare = squareToOccupy };
+                                            newKing = new King(this, Alignment.White) { OccupiedSquare = squareToOccupy };
                                         }
                                         else // if (squareToOccupy.YCoordinate == 8)
                                         {
-                                            newKing = new King(this, Alignments.Black) { OccupiedSquare = squareToOccupy };
+                                            newKing = new King(this, Alignment.Black) { OccupiedSquare = squareToOccupy };
                                         }
                                         squareToOccupy.OccupyingPiece = newKing;
                                         break;
@@ -148,11 +148,11 @@ namespace SpackChess
                                         Queen newQueen;
                                         if (squareToOccupy.YCoordinate == 1)
                                         {
-                                            newQueen = new Queen(this, Alignments.White) { OccupiedSquare = squareToOccupy };
+                                            newQueen = new Queen(this, Alignment.White) { OccupiedSquare = squareToOccupy };
                                         }
                                         else // if (squareToOccupy.YCoordinate == 8)
                                         {
-                                            newQueen = new Queen(this, Alignments.Black) { OccupiedSquare = squareToOccupy };
+                                            newQueen = new Queen(this, Alignment.Black) { OccupiedSquare = squareToOccupy };
                                         }
                                         squareToOccupy.OccupyingPiece = newQueen;
                                         break;
@@ -162,13 +162,13 @@ namespace SpackChess
                         }
                     case 2:
                         {
-                            var newPawn = new Pawn(this, Alignments.White) { OccupiedSquare = squareToOccupy };
+                            var newPawn = new Pawn(this, Alignment.White) { OccupiedSquare = squareToOccupy };
                             squareToOccupy.OccupyingPiece = newPawn;
                             break;
                         }
                     case 7:
                         {
-                            var newPawn = new Pawn(this, Alignments.Black) { OccupiedSquare = squareToOccupy };
+                            var newPawn = new Pawn(this, Alignment.Black) { OccupiedSquare = squareToOccupy };
                             squareToOccupy.OccupyingPiece = newPawn;
                             break;
                         }
@@ -200,7 +200,7 @@ namespace SpackChess
                 if (m_previousSelectedSquare.OccupyingPiece is Pawn && selectedSquare.XCoordinate != m_previousSelectedSquare.XCoordinate && selectedSquare.OccupyingPiece == null)
                 {                                      
                     this.WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece, true);
-                    if (WhosTurnIsIt == Alignments.White)
+                    if (WhosTurnIsIt == Alignment.White)
                     {
                         this.GetSquare(selectedSquare.XCoordinate, selectedSquare.YCoordinate - 1).OccupyingPiece = null;
                     }
@@ -218,17 +218,20 @@ namespace SpackChess
                     this.WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece);
                 }
                
-                m_previousSelectedSquare.GrSquare.Children.Clear();
-                selectedSquare.OccupyingPiece = m_previousSelectedSquare.OccupyingPiece;
-                selectedSquare.OccupyingPiece.OccupiedSquare = selectedSquare;
-                selectedSquare.OccupyingPiece.m_hasMoved = true;  
-                m_previousSelectedSquare.OccupyingPiece = null;
+                //m_previousSelectedSquare.GrSquare.Children.Clear();
+                //selectedSquare.OccupyingPiece = m_previousSelectedSquare.OccupyingPiece;
+                //selectedSquare.OccupyingPiece.OccupiedSquare = selectedSquare;
+                //selectedSquare.OccupyingPiece.m_hasMoved = true;  
+                //m_previousSelectedSquare.OccupyingPiece = null;
+                MovePiece(m_previousSelectedSquare, selectedSquare);
                 m_previousPossibleSquares.Clear();
                 m_previousSelectedSquare = null;
 
                 //todo: Abfrage für Schachmatt
+
+                //prüfen ob Gegner im Schach ist, wenn ja, Feld markieren.
                 Square enemyKingLocation = this.GetKingLocation(m_whosTurnIsItNot);
-                if (this.SquareAttacked(enemyKingLocation, this.WhosTurnIsIt))// && (enemyKingLocation.OccupyingPiece.GetValidMoves(enemyKingLocation).Count == 0))
+                if (this.IsKingThreatened(this.m_whosTurnIsItNot))
                 {
                     enemyKingLocation.Highlight(true);
                     this.m_whoIsChecked = m_whosTurnIsItNot;
@@ -291,6 +294,15 @@ namespace SpackChess
             }
             //todo: Promotion notieren, Notation überhaupt richtig stellen. Dann permament speichern. Außerdem Mechanismus zum Einlesen überlegen, dann könnten gespeicherte Spiele fortgesetzt werden.
         }
+        
+        public void MovePiece(Square oldSquare, Square newSquare)
+        {
+            oldSquare.GrSquare.Children.Clear();
+            newSquare.OccupyingPiece = oldSquare.OccupyingPiece;
+            newSquare.OccupyingPiece.OccupiedSquare = newSquare;
+            newSquare.OccupyingPiece.m_hasMoved = true;
+            oldSquare.OccupyingPiece = null;
+        }
 
         private PieceBase PromotedPiece(Square selectedSquare)
         {
@@ -316,7 +328,7 @@ namespace SpackChess
             }  
         }
 
-        private Square GetKingLocation(Alignments color)
+        public Square GetKingLocation(Alignment color)
         {            
             foreach (Square possibleSquare in this.m_allSqaures)
             {               
@@ -327,34 +339,7 @@ namespace SpackChess
             }
             return null;
         }
-
-        public Boolean SquareAttacked(Square squareToExamine, Alignments attackingAlignment)
-        {
-            var allEnemyPiecesOnChessboard = new List<PieceBase>();            
-            foreach (Square possibleSquare in this.m_allSqaures)
-            {
-                if (possibleSquare.OccupyingPiece != null && possibleSquare.OccupyingPiece.Alignment == attackingAlignment)
-                {
-                    allEnemyPiecesOnChessboard.Add(possibleSquare.OccupyingPiece);
-                }
-            }
-            
-            foreach (PieceBase enemyPiece in allEnemyPiecesOnChessboard)
-            {
-                var enemyCheckedSquares = new List<Square>();
-                enemyCheckedSquares = enemyPiece.GetValidMoves(enemyPiece.OccupiedSquare);
-                foreach (Square enemyCheckedSquare in enemyCheckedSquares)
-                {
-                    if (enemyCheckedSquare == squareToExamine)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
+                
         private Boolean verifyCheckMate(Square attackingSquare, Square attackedSquare)
         {
             //todo: Schachmatt prüfen
@@ -362,7 +347,267 @@ namespace SpackChess
             return false;
         }
 
-        public void SplashNoMoves()
+        public Boolean IsKingThreatened(Alignment color)
+        {
+            //Gerade Linie prüfen
+            int i = 1;
+            bool canMoveLeft = true;
+            bool canMoveRight = true;
+            bool canMoveUp = true;
+            bool canMoveDown = true;
+
+            Square kingLocation = this.GetKingLocation(color);
+
+            // Geraden prüfen
+            while (i <= 8)
+            {
+                if (canMoveRight)
+                {
+                    var potentialSquare = this.GetSquare(kingLocation.XCoordinate + i, kingLocation.YCoordinate);
+                    if (potentialSquare != null)
+                    {
+                        if (potentialSquare.OccupyingPiece != null)
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment == kingLocation.OccupyingPiece.EnemyAlignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                canMoveRight = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        canMoveRight = false;
+                    }
+                }
+                if (canMoveLeft)
+                {
+                    var potentialSquare = this.GetSquare(kingLocation.XCoordinate - i, kingLocation.YCoordinate);
+                    if (potentialSquare != null)
+                    {
+                        if (potentialSquare.OccupyingPiece != null)
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment == kingLocation.OccupyingPiece.EnemyAlignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                canMoveLeft = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        canMoveLeft = false;
+                    }
+                }
+                if (canMoveUp)
+                {
+                    var potentialSquare = this.GetSquare(kingLocation.XCoordinate, kingLocation.YCoordinate + i);
+                    if (potentialSquare != null)
+                    {
+                        if (potentialSquare.OccupyingPiece != null)
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment == kingLocation.OccupyingPiece.EnemyAlignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                canMoveUp = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        canMoveUp = false;
+                    }
+                }
+                if (canMoveDown)
+                {
+                    var potentialSquare = this.GetSquare(kingLocation.XCoordinate, kingLocation.YCoordinate - i);
+                    if (potentialSquare != null)
+                    {
+                        if (potentialSquare.OccupyingPiece != null)
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment == kingLocation.OccupyingPiece.EnemyAlignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                canMoveDown = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        canMoveDown = false;
+                    }
+                }
+                i++;
+            }
+
+            //Diagonale prüfen
+            i = 1;
+            bool canMoveUpLeft = true;
+            bool canMoveUpRight = true;
+            bool canMoveDownLeft = true;
+            bool canMoveDownRight = true;
+
+            while (i <= 8)
+            {
+                if (canMoveUpRight)
+                {
+                    var potentialSquare = this.GetSquare(kingLocation.XCoordinate + i, kingLocation.YCoordinate + i);
+                    if (potentialSquare != null)
+                    {
+                        if (potentialSquare.OccupyingPiece != null)
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment == kingLocation.OccupyingPiece.EnemyAlignment && (potentialSquare.OccupyingPiece is Bishop || potentialSquare.OccupyingPiece is Queen))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                canMoveUpRight = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        canMoveUpRight = false;
+                    }
+                }
+                if (canMoveUpLeft)
+                {
+                    var potentialSquare = this.GetSquare(kingLocation.XCoordinate - i, kingLocation.YCoordinate + i);
+                    if (potentialSquare != null)
+                    {
+                        if (potentialSquare.OccupyingPiece != null)
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment == kingLocation.OccupyingPiece.EnemyAlignment && (potentialSquare.OccupyingPiece is Bishop || potentialSquare.OccupyingPiece is Queen))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                canMoveUpLeft = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        canMoveUpLeft = false;
+                    }
+                }
+                if (canMoveDownRight)
+                {
+                    var potentialSquare = this.GetSquare(kingLocation.XCoordinate + i, kingLocation.YCoordinate - i);
+                    if (potentialSquare != null)
+                    {
+                        if (potentialSquare.OccupyingPiece != null)
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment == kingLocation.OccupyingPiece.EnemyAlignment && (potentialSquare.OccupyingPiece is Bishop || potentialSquare.OccupyingPiece is Queen))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                canMoveDownRight = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        canMoveDownRight = false;
+                    }
+                }
+                if (canMoveDownLeft)
+                {
+                    var potentialSquare = this.GetSquare(kingLocation.XCoordinate - i, kingLocation.YCoordinate - i);
+                    if (potentialSquare != null)
+                    {
+                        if (potentialSquare.OccupyingPiece != null)
+                        {
+                            if (potentialSquare.OccupyingPiece.Alignment == kingLocation.OccupyingPiece.EnemyAlignment && (potentialSquare.OccupyingPiece is Bishop || potentialSquare.OccupyingPiece is Queen))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                canMoveDownLeft = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        canMoveDownLeft = false;
+                    }
+                }
+                i++;
+            }
+
+            //Springer prüfen
+            int x = kingLocation.XCoordinate;
+            int y = kingLocation.YCoordinate;
+            // Zwei Listen für mögliche x und y Koordinaten werden erstellt. 
+            // Die Items der beiden Listen gehören zusammen, also possibleX[1] und possibleY[1]. So können mit einer for schleife alle Felder abgefragt werden. 
+            // Das erste Feld ist oben rechts neben dem aktuellen Feld. Reihenfolge dann im Uhrzeigersinn.
+            List<int> possibleX = new List<int>(8) { x + 1, x + 2, x + 2, x + 1, x - 1, x - 2, x - 2, x - 1 };
+            List<int> possibleY = new List<int>(8) { y + 2, y + 1, y - 1, y - 2, y - 2, y - 1, y + 1, y + 2 };
+
+            for (i = 0; i < 8; i++)
+            {
+                Square potentialSquare = this.GetSquare(possibleX[i], possibleY[i]);
+
+                if (potentialSquare != null)
+                {
+                    if (potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment == kingLocation.OccupyingPiece.EnemyAlignment && potentialSquare.OccupyingPiece is Knight)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            //Bauer prüfen           
+            if (kingLocation.OccupyingPiece.EnemyAlignment == Alignment.White)
+            {
+                Square potentialSquare;
+                potentialSquare = this.GetSquare(kingLocation.XCoordinate + 1, kingLocation.YCoordinate + 1);
+                if (potentialSquare != null && potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment == kingLocation.OccupyingPiece.EnemyAlignment)
+                {
+                    return true;
+                }
+                potentialSquare = this.GetSquare(kingLocation.XCoordinate - 1, kingLocation.YCoordinate + 1);
+                if (potentialSquare != null && potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment == kingLocation.OccupyingPiece.EnemyAlignment)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                Square potentialSquare;
+                potentialSquare = this.GetSquare(kingLocation.XCoordinate + 1, kingLocation.YCoordinate - 1);
+                if (potentialSquare != null && potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment == kingLocation.OccupyingPiece.EnemyAlignment)
+                {
+                    return true;
+                }
+                potentialSquare = this.GetSquare(kingLocation.XCoordinate - 1, kingLocation.YCoordinate - 1);
+                if (potentialSquare != null && potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment == kingLocation.OccupyingPiece.EnemyAlignment)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void SplashNoMoves()
         {
             SplashNoMoves snm = new SplashNoMoves();
             snm.Show();

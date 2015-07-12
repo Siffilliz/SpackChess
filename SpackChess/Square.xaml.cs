@@ -143,46 +143,6 @@ namespace SpackChess
             else
                 return false;
         }
-        /*
-         * Laut https://msdn.microsoft.com/en-us/library/ms131190.aspx?cs-save-lang=1&cs-lang=csharp#code-snippet-2  
-         * sollte die Equals Methode von object.Equals und die GetHashCode auch überschrieben werden. Die
-         * führt allerdings zur Fehlermeldung beim Compilieren: 
-         * "Fehler	1	'SpackChess.Square.Equals(object)': Der geerbte Member 'System.Windows.DependencyObject.Equals(object)' kann nicht überschrieben werden, da er versiegelt ist.
-         * Das gleiche für GetHashCode
-
-        public override bool Equals(Object obj)
-        {
-            if (obj == null)
-                return false;
-
-            Square squareobj = obj as Square;
-            if (squareobj == null)
-                return false;
-            else
-                return Equals(squareobj);
-        }
-
-        public override int GetHashCode()
-        {
-            return this.XCoordinate.GetHashCode() + this.YCoordinate.GetHashCode();
-        }
-       
-        public static bool operator == (Square square1, Square square2)
-        {
-            if (square1 == null || square2 == null)
-                return Object.Equals(square1, square2);
-
-            return square1.Equals(square2);
-        }
-
-        public static bool operator !=(Square square1, Square square2)
-        {
-            if (square1 == null || square2 == null)
-                return !Object.Equals(square1, square2);
-
-            return !(square1.Equals(square2));
-        }
-         */
         // Ende Implementierung IEquatable
     }
 }

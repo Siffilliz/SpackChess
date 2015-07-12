@@ -8,12 +8,12 @@ namespace SpackChess
 {
     class King : PieceBase
     {
-        public King(IChessboard chessboard, Alignments color)
+        public King(IChessboard chessboard, Alignment color)
             : base(chessboard, color)
         {
             m_graphic = new System.Windows.Controls.Image();
 
-            if (this.Alignment == Alignments.Black)
+            if (this.Alignment == Alignment.Black)
             {
                 m_graphic.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/Pictures/KB.png"));
             }
@@ -48,12 +48,15 @@ namespace SpackChess
 
                 if (potentialSquare != null)
                 {
-                    if ((potentialSquare.OccupyingPiece == null || potentialSquare.OccupyingPiece.Alignment != this.Alignment) && !this.SquareAttacked(potentialSquare))
+                    if ((potentialSquare.OccupyingPiece == null || potentialSquare.OccupyingPiece.Alignment != this.Alignment) && !this.m_chessboard.IsKingThreatened(this.Alignment))
                     {
                         validSquares.Add(potentialSquare);
                     }
                 }
             }
+
+            base.SimulateMove(validSquares);
+
             return validSquares;
         }
 
@@ -61,262 +64,6 @@ namespace SpackChess
         {
             return "K";
         }
-
-        public Boolean SquareAttacked(Square squareToExamine)
-        {
-           //Gerade Linie prüfen
-            int i = 1;
-            bool canMoveLeft = true;
-            bool canMoveRight = true;
-            bool canMoveUp = true;
-            bool canMoveDown = true;
-
-            while (i <= 8)
-            {
-                if (canMoveRight)
-                {
-                    var potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate + i, squareToExamine.YCoordinate);
-                    if (potentialSquare != null)
-                    {
-                        if (potentialSquare.OccupyingPiece != null)
-                        {
-                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
-                            {
-                                return true;     
-                            }
-                            else
-                            {
-                                canMoveRight = false;  
-                            }
-                        }                                                
-                    }
-                    else 
-                    {
-                        canMoveRight = false;  
-                    }
-                }
-                if (canMoveLeft)
-                {
-                    var potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate - i, squareToExamine.YCoordinate);
-                    if (potentialSquare != null)
-                    {
-                        if (potentialSquare.OccupyingPiece != null)
-                        {
-                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                canMoveLeft = false;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        canMoveLeft = false;
-                    }
-                }
-                if (canMoveUp)
-                {
-                    var potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate, squareToExamine.YCoordinate + i);
-                    if (potentialSquare != null)
-                    {
-                        if (potentialSquare.OccupyingPiece != null)
-                        {
-                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                canMoveUp = false;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        canMoveUp = false;
-                    }
-                }
-                if (canMoveDown)
-                {
-                    var potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate, squareToExamine.YCoordinate - i);
-                    if (potentialSquare != null)
-                    {
-                        if (potentialSquare.OccupyingPiece != null)
-                        {
-                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Rook || potentialSquare.OccupyingPiece is Queen))
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                canMoveDown = false;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        canMoveDown = false;
-                    }
-                }
-                i++;
-            }        
-
-            //Diagonale prüfen
-            i = 1;
-            bool canMoveUpLeft = true;
-            bool canMoveUpRight = true;
-            bool canMoveDownLeft = true;
-            bool canMoveDownRight = true;
-
-            while (i <= 8)
-            {
-                if (canMoveUpRight)
-                {
-                    var potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate + i, squareToExamine.YCoordinate + i);
-                    if (potentialSquare != null)
-                    {
-                        if (potentialSquare.OccupyingPiece != null)
-                        {
-                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Bishop || potentialSquare.OccupyingPiece is Queen))
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                canMoveUpRight = false;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        canMoveUpRight = false;
-                    }
-                }
-                if (canMoveUpLeft)
-                {
-                    var potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate - i, squareToExamine.YCoordinate + i);
-                    if (potentialSquare != null)
-                    {
-                        if (potentialSquare.OccupyingPiece != null)
-                        {
-                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Bishop || potentialSquare.OccupyingPiece is Queen))
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                canMoveUpLeft = false;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        canMoveUpLeft = false;
-                    }
-                }
-                if (canMoveDownRight)
-                {
-                    var potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate + i, squareToExamine.YCoordinate - i);
-                    if (potentialSquare != null)
-                    {
-                        if (potentialSquare.OccupyingPiece != null)
-                        {
-                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Bishop || potentialSquare.OccupyingPiece is Queen))
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                canMoveDownRight = false;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        canMoveDownRight = false;
-                    }
-                }
-                if (canMoveDownLeft)
-                {
-                    var potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate - i, squareToExamine.YCoordinate - i);
-                    if (potentialSquare != null)
-                    {
-                        if (potentialSquare.OccupyingPiece != null)
-                        {
-                            if (potentialSquare.OccupyingPiece.Alignment != this.Alignment && (potentialSquare.OccupyingPiece is Bishop || potentialSquare.OccupyingPiece is Queen))
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                canMoveDownLeft = false;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        canMoveDownLeft = false;
-                    }
-                }
-                i++;
-            }        
-
-            //Springer prüfen
-            int x = squareToExamine.XCoordinate;
-            int y = squareToExamine.YCoordinate;
-            // Zwei Listen für mögliche x und y Koordinaten werden erstellt. 
-            // Die Items der beiden Listen gehören zusammen, also possibleX[1] und possibleY[1]. So können mit einer for schleife alle Felder abgefragt werden. 
-            // Das erste Feld ist oben rechts neben dem aktuellen Feld. Reihenfolge dann im Uhrzeigersinn.
-            List<int> possibleX = new List<int>(8) { x + 1, x + 2, x + 2, x + 1, x - 1, x - 2, x - 2, x - 1 };
-            List<int> possibleY = new List<int>(8) { y + 2, y + 1, y - 1, y - 2, y - 2, y - 1, y + 1, y + 2 };
-
-            for (i = 0; i < 8; i++)
-            {
-                Square potentialSquare = this.m_chessboard.GetSquare(possibleX[i], possibleY[i]);
-
-                if (potentialSquare != null)
-                {
-                    if (potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment != this.Alignment && potentialSquare.OccupyingPiece is Knight)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            //Bauer prüfen           
-            if (this.Alignment == Alignments.White)
-            {
-                Square potentialSquare;                
-                potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate + 1, squareToExamine.YCoordinate + 1);
-                if (potentialSquare != null && potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment != this.Alignment)
-                {
-                    return true;
-                }
-                potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate - 1, squareToExamine.YCoordinate + 1);
-                if (potentialSquare != null && potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment != this.Alignment)
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                Square potentialSquare;               
-                potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate + 1, squareToExamine.YCoordinate - 1);
-                if (potentialSquare != null && potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment != this.Alignment)
-                {
-                   return true;
-                }
-                potentialSquare = this.m_chessboard.GetSquare(squareToExamine.XCoordinate - 1, squareToExamine.YCoordinate - 1);
-                if (potentialSquare != null && potentialSquare.OccupyingPiece != null && potentialSquare.OccupyingPiece.Alignment != this.Alignment)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+       
     }
 }

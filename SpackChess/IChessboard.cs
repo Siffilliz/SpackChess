@@ -15,25 +15,30 @@ namespace SpackChess
 
         Square GetSquare(int x, int y);
 
-        String LastMove
+        string LastMove
         {
             get;
             set;
         }
 
-        Alignments WhosTurnIsIt
+        Alignment WhosTurnIsIt
         {
             get;
             set;
         }
 
-        Alignments WhosTurnIsItNot
+        Alignment WhosTurnIsItNot
         {
             get;
         }
+        
+        Boolean IsKingThreatened(Alignment color);
 
-        Boolean SquareAttacked(Square squareToExamine, Alignments attackingAlignment);
+        Square GetKingLocation(Alignment color);
 
-        void ResetGame();               
+        void ResetGame();
+
+        void MovePiece(Square oldSquare, Square newSquare);        
+        
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SpackChess
 {
-    public enum Alignments
+    public enum Alignment
     {
         Black,
 

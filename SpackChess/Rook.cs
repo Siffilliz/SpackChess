@@ -9,12 +9,12 @@ namespace SpackChess
     class Rook : PieceBase
     {
 
-        public Rook(IChessboard chessboard, Alignments color)
+        public Rook(IChessboard chessboard, Alignment color)
             : base(chessboard, color)
         {
             m_graphic = new System.Windows.Controls.Image();
 
-            if (this.Alignment == Alignments.Black)
+            if (this.Alignment == Alignment.Black)
             {
                 m_graphic.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/Pictures/RB.png"));
             }
@@ -120,7 +120,9 @@ namespace SpackChess
                     }
                 }
                 i++;
-            }        
+            }
+
+            base.SimulateMove(validSquares);
 
             return validSquares;
         }

@@ -8,12 +8,12 @@ namespace SpackChess
 {
     class Bishop : PieceBase
     {
-        public Bishop(IChessboard chessboard, Alignments color)
+        public Bishop(IChessboard chessboard, Alignment color)
             : base(chessboard, color)
         {
             m_graphic = new System.Windows.Controls.Image();
 
-            if (this.Alignment == Alignments.Black)
+            if (this.Alignment == Alignment.Black)
             {
                 m_graphic.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,/Pictures/BB.png"));
             }
@@ -121,6 +121,8 @@ namespace SpackChess
                 }
                 i++;
             }
+
+            base.SimulateMove(validSquares);
 
             return validSquares;
         }
