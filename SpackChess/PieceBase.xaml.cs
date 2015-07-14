@@ -20,10 +20,9 @@ namespace SpackChess
     /// </summary>
     public abstract partial class PieceBase : UserControl
     {
-        internal IChessboard m_chessboard;
-        internal Image m_graphic;
-        internal Square m_occupiedSquare;
-        internal bool m_hasMoved = false;
+        protected IChessboard m_chessboard;
+        protected Image m_graphic;
+        protected Square m_occupiedSquare;
 
         public Image Graphic      
         {
@@ -58,6 +57,12 @@ namespace SpackChess
             }
         }
 
+        public bool HasMoved
+        {
+            get;
+            set;
+        }
+
         public Square OccupiedSquare
         {
             get
@@ -79,7 +84,9 @@ namespace SpackChess
         {
             this.m_chessboard = chessboard;
            
-            Alignment = color;                     
+            Alignment = color;
+
+            HasMoved = false;
             
             InitializeComponent();
         }
@@ -91,19 +98,32 @@ namespace SpackChess
         public void SimulateMove(List<Square> potentialMoves)
         {
             Square oldLocation = this.m_occupiedSquare;
-                               
+            bool simulatedPieceHasMoved = this.HasMoved;
+
             var movesToRemove = new List<Square>();
 
             foreach (Square potentialMove in potentialMoves)
-            {                              
+            {
+                var savePiece = potentialMove.OccupyingPiece;
+                bool savePieceHasMoved = false;
+                if (savePiece != null)
+                {                    
+                    savePieceHasMoved = potentialMove.OccupyingPiece.HasMoved;
+                }
                 this.m_chessboard.MovePiece(oldLocation, potentialMove);
-                
+
                 if (this.m_chessboard.IsKingThreatened(this.Alignment))
                 {
                     movesToRemove.Add(potentialMove);
                 }
-                
-                this.m_chessboard.MovePiece(potentialMove, oldLocation);     
+
+                this.m_chessboard.MovePiece(potentialMove, oldLocation);
+                this.HasMoved = simulatedPieceHasMoved;
+                if (savePiece != null)
+                {
+                    potentialMove.OccupyingPiece = savePiece;
+                    potentialMove.OccupyingPiece.HasMoved = savePieceHasMoved;
+                }
             }
 
             foreach (Square removeMove in movesToRemove)
@@ -111,5 +131,6 @@ namespace SpackChess
                 potentialMoves.Remove(removeMove);
             }
         }
+      
     } 
 }

@@ -20,7 +20,7 @@ namespace SpackChess
     /// </summary>
     public partial class Square : UserControl, IEquatable<Square>
     {
-        private PieceBase m_occupyingPiece;
+        protected PieceBase m_occupyingPiece;
         /// <summary>
         /// Gets or sets the value of the XCoordinate.
         /// </summary>

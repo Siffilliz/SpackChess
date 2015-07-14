@@ -48,7 +48,7 @@ namespace SpackChess
 
                 if (potentialSquare != null)
                 {
-                    if ((potentialSquare.OccupyingPiece == null || potentialSquare.OccupyingPiece.Alignment != this.Alignment) && !this.m_chessboard.IsKingThreatened(this.Alignment))
+                    if ((potentialSquare.OccupyingPiece == null || potentialSquare.OccupyingPiece.Alignment != this.Alignment))
                     {
                         validSquares.Add(potentialSquare);
                     }

@@ -17,12 +17,12 @@ namespace SpackChess
 {
     public partial class Chessboard : IChessboard
     {
-        private List<Square> m_allSqaures = new List<Square>();
-        private Square m_previousSelectedSquare;
-        private List<Square> m_previousPossibleSquares = new List<Square>();
-        private Alignment m_whosTurnIsIt = Alignment.White;
-        private Alignment m_whosTurnIsItNot = Alignment.Black;
-        private Alignment m_whoIsChecked;
+        protected List<Square> m_allSqaures = new List<Square>();
+        protected Square m_previousSelectedSquare;
+        protected List<Square> m_previousPossibleSquares = new List<Square>();
+        protected Alignment m_whosTurnIsIt = Alignment.White;
+        protected Alignment m_whosTurnIsItNot = Alignment.Black;
+        protected Alignment m_whoIsChecked;
       
         public List<Square> AllSquares
         {
@@ -183,7 +183,7 @@ namespace SpackChess
         {            
             Square selectedSquare = sender as Square;
 
-            if (selectedSquare.Equals(m_previousSelectedSquare))       // gleiches Feld wieder gewählt => mögliche Züge nicht mehr markieren
+            if (selectedSquare.Equals(m_previousSelectedSquare) && this.m_previousPossibleSquares.Count != 0)       // gleiches Feld wieder gewählt => mögliche Züge nicht mehr markieren
             {   
                 foreach (Square possibleSquare in m_previousPossibleSquares)
                 {
@@ -199,7 +199,7 @@ namespace SpackChess
                     possibleSquare.UnHighlight();
                 }
                 
-                //Abfrage wegen en passant. Später wahrscheinlich auch noch Rochade
+                //todo: Abfrage wegen en passant. Später wahrscheinlich auch noch Rochade
                 if (m_previousSelectedSquare.OccupyingPiece is Pawn && selectedSquare.XCoordinate != m_previousSelectedSquare.XCoordinate && selectedSquare.OccupyingPiece == null)
                 {                                      
                     this.WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece, true);
@@ -225,14 +225,24 @@ namespace SpackChess
                 m_previousPossibleSquares.Clear();
                 m_previousSelectedSquare = null;
 
-                //todo: Abfrage für Schachmatt
-
                 //prüfen ob Gegner im Schach ist, wenn ja, Feld markieren.
                 Square enemyKingLocation = this.GetKingLocation(m_whosTurnIsItNot);
                 if (this.IsKingThreatened(this.m_whosTurnIsItNot))
                 {
                     enemyKingLocation.Highlight(true);
                     this.m_whoIsChecked = m_whosTurnIsItNot;
+
+                    if (this.verifyCheckMate(this.m_whosTurnIsItNot))
+                    {
+                        if (this.m_whosTurnIsItNot == Alignment.White)
+                        {
+                            MessageBox.Show("Spieler Weiß ist Schachmatt!");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Spieler Schwarz ist Schachmatt!");
+                        }                       
+                    }
                 }
                                               
                 m_previousPossibleSquares.Clear();
@@ -262,14 +272,7 @@ namespace SpackChess
                         }
 
                         foreach (Square possibleSquare in validMoves)
-                        {                          
-                           //todo: Zusätzliche Abfrage, falls ein Feld geschlagen werden soll. Beim Prüfen der Bedrohung für dieses Feld, wird es nicht mit in Betracht gezogen, 
-                            //      da ja eine eigene Figur drauf steht. D.h. wenn der König eine Figur auf dem Feld schlagen will, dieses Feld aber z.B. von der Dame bedroht wird,
-                            //      fällt das im Programm nicht auf => Abfrage ob Feld von Gegner besetzt => Wenn ja, Feld "temporär" mit eigenem König besetzen => Bedrohung dieses
-                            //      Feldes prüfen => Feld als Zug zulassen oder auch nicht => Figuren wieder den ursprünglichen Feldern zuweisen...
-                            //todo: Es muss geprüft werden, ob das Wegziehen einer Figur ein Schach verursacht => Figur darf nicht weggezogen werden, außer sie schlägt die schachgebende figur bzw zieht dorthin, wo immer noch kein schach ist. Vorgehen wie im Beispiel drüber, z
-                            //todo: Rochade einbauen. Abfrage ob Rochade druchgeführt wurde (König zieht mehr als ein Feld in x-Richtung) beim tatsächlichen Zug.
-                               
+                        {                           
                             possibleSquare.Highlight();
                             m_previousPossibleSquares.Add(possibleSquare);
                         }
@@ -294,11 +297,11 @@ namespace SpackChess
         }
         
         public void MovePiece(Square oldSquare, Square newSquare)
-        {
+        {            
             oldSquare.GrSquare.Children.Clear();
             newSquare.OccupyingPiece = oldSquare.OccupyingPiece;
             newSquare.OccupyingPiece.OccupiedSquare = newSquare;
-            newSquare.OccupyingPiece.m_hasMoved = true;
+            newSquare.OccupyingPiece.HasMoved = true;
             oldSquare.OccupyingPiece = null;
         }
 
@@ -338,11 +341,21 @@ namespace SpackChess
             return null;
         }
                 
-        private bool verifyCheckMate(Square attackingSquare, Square attackedSquare)
-        {
-            //todo: Schachmatt prüfen
-
-            return false;
+        private bool verifyCheckMate(Alignment color)
+        {           
+            foreach (Square occupiedSquare in this.m_allSqaures)
+            {
+                if (occupiedSquare.OccupyingPiece != null && occupiedSquare.OccupyingPiece.Alignment == color)
+                {
+                    List<Square> validMoves = occupiedSquare.OccupyingPiece.GetValidMoves(occupiedSquare);                    
+                    occupiedSquare.OccupyingPiece.SimulateMove(validMoves);
+                    if (validMoves.Count != 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         public bool IsKingThreatened(Alignment color)
@@ -573,7 +586,7 @@ namespace SpackChess
             }
 
             //Bauer prüfen           
-            if (kingLocation.OccupyingPiece.EnemyAlignment == Alignment.White)
+            if (kingLocation.OccupyingPiece.EnemyAlignment == Alignment.Black)
             {
                 Square potentialSquare;
                 potentialSquare = this.GetSquare(kingLocation.XCoordinate + 1, kingLocation.YCoordinate + 1);

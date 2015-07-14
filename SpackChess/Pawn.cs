@@ -40,7 +40,7 @@ namespace SpackChess
             if (currentLocation.OccupyingPiece.Alignment == Alignment.White)
             {
                 potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate, currentLocation.YCoordinate + 2);               
-                if (potentialSquare != null && potentialSquare.OccupyingPiece == null && m_hasMoved == false)
+                if (potentialSquare != null && potentialSquare.OccupyingPiece == null && this.HasMoved == false)
                 {
                     if (this.m_chessboard.GetSquare(potentialSquare.XCoordinate, potentialSquare.YCoordinate - 1).OccupyingPiece == null)
                     {
@@ -66,7 +66,7 @@ namespace SpackChess
             else
             {
                 potentialSquare = this.m_chessboard.GetSquare(currentLocation.XCoordinate, currentLocation.YCoordinate - 2);
-                if (potentialSquare != null && potentialSquare.OccupyingPiece == null && m_hasMoved == false)
+                if (potentialSquare != null && potentialSquare.OccupyingPiece == null && this.HasMoved == false)
                 {
                     if (this.m_chessboard.GetSquare(potentialSquare.XCoordinate, potentialSquare.YCoordinate + 1).OccupyingPiece == null)
                     {
