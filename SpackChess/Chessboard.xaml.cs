@@ -198,8 +198,7 @@ namespace SpackChess
                 {
                     possibleSquare.UnHighlight();
                 }
-                
-                //todo: Abfrage wegen en passant. Später wahrscheinlich auch noch Rochade
+                                
                 if (m_previousSelectedSquare.OccupyingPiece is Pawn && selectedSquare.XCoordinate != m_previousSelectedSquare.XCoordinate && selectedSquare.OccupyingPiece == null)
                 {                                      
                     this.WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece, true);
@@ -210,12 +209,39 @@ namespace SpackChess
                     else
                     {
                         this.GetSquare(selectedSquare.XCoordinate, selectedSquare.YCoordinate + 1).OccupyingPiece = null;
-                    }                    
-                }   //else if Umwandlung
+                    }                 
+                } 
+                    //else if kurze Rochade
+                else if (m_previousSelectedSquare.OccupyingPiece is King && selectedSquare.XCoordinate == m_previousSelectedSquare.XCoordinate + 2)
+                {
+                    if (WhosTurnIsIt == Alignment.White)
+                    {
+                        MovePiece(this.GetSquare(8, 1), this.GetSquare(6, 1));
+                    }
+                    else
+                    {
+                        MovePiece(this.GetSquare(8, 8), this.GetSquare(6, 8));                       
+                    }
+                    WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece, false, "0-0");
+                } 
+                    //else if lange Rochade
+                else if (m_previousSelectedSquare.OccupyingPiece is King && selectedSquare.XCoordinate == m_previousSelectedSquare.XCoordinate - 2)
+                {
+                    if (WhosTurnIsIt == Alignment.White)
+                    {
+                        MovePiece(this.GetSquare(1, 1), this.GetSquare(4, 1));
+                    }
+                    else
+                    {
+                        MovePiece(this.GetSquare(1, 8), this.GetSquare(4, 8));
+                    }
+                    WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece, false, "0-0-0");
+                } 
+                    //else if Umwandlung
                 else if (m_previousSelectedSquare.OccupyingPiece is Pawn && (selectedSquare.YCoordinate == 1 | selectedSquare.YCoordinate == 8))
                 {
-                    m_previousSelectedSquare.OccupyingPiece = this.PromotedPiece(selectedSquare);  
-                }                
+                    m_previousSelectedSquare.OccupyingPiece = this.PromotedPiece(selectedSquare);
+                }
                 else
                 {
                     this.WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece);
@@ -283,16 +309,21 @@ namespace SpackChess
             }           
         }
 
-        private void WriteLastMove(Square startSquare, Square endSquare, PieceBase movedPiece, bool enPassant = false)
+        private void WriteLastMove(Square startSquare, Square endSquare, PieceBase movedPiece, bool enPassant = false, string rochade = "")
         {
             if (enPassant)
             {
                 LastMove = movedPiece.ToString() + startSquare.ToString() + "x" + endSquare.ToString() + " e.p.";
             }
+            else if (rochade != "")
+            {
+                LastMove = rochade;
+            }
             else
             {
                 LastMove = movedPiece.ToString() + startSquare.ToString() + "-" + endSquare.ToString();
             }
+
             //todo: Promotion notieren, Notation überhaupt richtig stellen. Dann permament speichern. Außerdem Mechanismus zum Einlesen überlegen, dann könnten gespeicherte Spiele fortgesetzt werden.
         }
         

@@ -54,8 +54,89 @@ namespace SpackChess
                     }
                 }
             }
-
+            
             base.SimulateMove(validSquares);
+
+            if (!this.HasMoved)
+            {
+                if (this.Alignment == Alignment.White)
+                {
+                    if (this.m_chessboard.GetSquare(1, 1).OccupyingPiece != null && this.m_chessboard.GetSquare(2,1).OccupyingPiece == null)
+                    {
+                        if (!this.m_chessboard.GetSquare(1, 1).OccupyingPiece.HasMoved)
+                        {
+                            if (validSquares.Contains(this.m_chessboard.GetSquare(4, 1)))
+                            {
+                                var castlingSquare = new List<Square>();
+                                castlingSquare.Add(this.m_chessboard.GetSquare(3, 1));
+                                base.SimulateMove(castlingSquare);
+
+                                if (castlingSquare.Count == 1)
+                                {
+                                    validSquares.Add(this.m_chessboard.GetSquare(3, 1));
+                                }
+                            }
+                        }
+                    }
+
+                    if (this.m_chessboard.GetSquare(8, 1).OccupyingPiece != null && this.m_chessboard.GetSquare(7, 1).OccupyingPiece == null)
+                    {
+                        if (!this.m_chessboard.GetSquare(8, 1).OccupyingPiece.HasMoved)
+                        {
+                            if (validSquares.Contains(this.m_chessboard.GetSquare(6, 1)))
+                            {
+                                var castlingSquare = new List<Square>();
+                                castlingSquare.Add(this.m_chessboard.GetSquare(7, 1));
+                                base.SimulateMove(castlingSquare);
+
+                                if (castlingSquare.Count == 1)
+                                {
+                                    validSquares.Add(this.m_chessboard.GetSquare(7, 1));
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (this.m_chessboard.GetSquare(1, 8).OccupyingPiece != null && this.m_chessboard.GetSquare(2, 8).OccupyingPiece == null)
+                    {
+                        if (!this.m_chessboard.GetSquare(1, 8).OccupyingPiece.HasMoved)
+                        {
+                            if (validSquares.Contains(this.m_chessboard.GetSquare(4, 8)))
+                            {
+                                var castlingSquare = new List<Square>();
+                                castlingSquare.Add(this.m_chessboard.GetSquare(3, 8));
+                                base.SimulateMove(castlingSquare);
+
+                                if (castlingSquare.Count == 1)
+                                {
+                                    validSquares.Add(this.m_chessboard.GetSquare(3, 8));
+                                }
+                            }
+                        }
+                    }
+
+                    if (this.m_chessboard.GetSquare(8, 8).OccupyingPiece != null && this.m_chessboard.GetSquare(7, 8).OccupyingPiece == null)
+                    {
+                        if (!this.m_chessboard.GetSquare(8, 8).OccupyingPiece.HasMoved)
+                        {
+                            if (validSquares.Contains(this.m_chessboard.GetSquare(6, 8)))
+                            {
+                                var castlingSquare = new List<Square>();
+                                castlingSquare.Add(this.m_chessboard.GetSquare(7, 8));
+                                base.SimulateMove(castlingSquare);
+
+                                if (castlingSquare.Count == 1)
+                                {
+                                    validSquares.Add(this.m_chessboard.GetSquare(7, 8));
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
 
             return validSquares;
         }
