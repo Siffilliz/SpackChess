@@ -23,6 +23,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>BasicCorrectnessRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -87,9 +89,11 @@
       <DependentUpon>Chessboard.xaml</DependentUpon>
     </Compile>
     <Compile Include="IChessboard.cs" />
+    <Compile Include="INotation.cs" />
     <Compile Include="King.cs" />
     <Compile Include="Knight.cs" />
     <Compile Include="ChessPieces.cs" />
+    <Compile Include="Notation.cs" />
     <Compile Include="Pawn.cs" />
     <Compile Include="PieceBase.xaml.cs">
       <DependentUpon>PieceBase.xaml</DependentUpon>

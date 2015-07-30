@@ -20,10 +20,18 @@ namespace SpackChess
     /// </summary>
     public partial class MainWindow : Window
     {
+        Chessboard m_chessboard = new Chessboard();
+
         public MainWindow()
         {
             InitializeComponent();
-            this.GrRoot.Children.Add(new Chessboard());
+            this.GrMain.Children.Add(m_chessboard);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            m_chessboard.ActualGameNotation.GetFileNameToSave();
+            m_chessboard.ActualGameNotation.WriteFile();
         }
     }
 }

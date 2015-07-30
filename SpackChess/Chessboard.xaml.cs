@@ -17,20 +17,30 @@ namespace SpackChess
 {
     public partial class Chessboard : IChessboard
     {
-        protected List<Square> m_allSqaures = new List<Square>();
+        protected List<Square> m_allSquares = new List<Square>();
         protected Square m_previousSelectedSquare;
         protected List<Square> m_previousPossibleSquares = new List<Square>();
         protected Alignment m_whosTurnIsIt = Alignment.White;
         protected Alignment m_whosTurnIsItNot = Alignment.Black;
         protected Alignment m_whoIsChecked;
+        protected Notation m_actualGameNotation = new Notation();
       
+        public Notation ActualGameNotation
+        {
+            get { return m_actualGameNotation; }
+            set
+            {
+                m_actualGameNotation = value;
+            }
+        }
+
         public List<Square> AllSquares
         {
-            get { return m_allSqaures; }
+            get { return m_allSquares; }
         }       
         public Square GetSquare(int x, int y)
         {
-            return this.m_allSqaures.FirstOrDefault(s => s.XCoordinate == x && s.YCoordinate == y);
+            return this.m_allSquares.FirstOrDefault(s => s.XCoordinate == x && s.YCoordinate == y);
         }
         public string LastMove
         {
@@ -66,7 +76,7 @@ namespace SpackChess
                     newSquare.SetValue(Grid.RowProperty, 8 - y);
                     newSquare.SetValue(Grid.ColumnProperty, x - 1);
                     newSquare.MouseUp += this.Square_MouseUp;
-                    this.m_allSqaures.Add(newSquare);
+                    this.m_allSquares.Add(newSquare);
                     this.GrChessboard.Children.Add(newSquare);
                 }
             }
@@ -78,7 +88,9 @@ namespace SpackChess
         /// </summary>
         public void ResetGame()
         {
-            foreach (Square squareToOccupy in this.m_allSqaures)
+            ActualGameNotation.GameRecord.Clear();
+
+            foreach (Square squareToOccupy in this.m_allSquares)
             {
                 switch (squareToOccupy.YCoordinate)
                 {
@@ -193,15 +205,21 @@ namespace SpackChess
                 m_previousPossibleSquares.Clear();
             }
             else if (m_previousPossibleSquares.Contains(selectedSquare))        // ein Feld der möglichen Züge wurde gewählt => Zug durchführen
-            {
-                foreach (Square possibleSquare in m_allSqaures)
+            {               
+                string capture = "-";
+                if (selectedSquare.OccupyingPiece != null)
+                {
+                    capture = "x";
+                }
+
+                foreach (Square possibleSquare in m_allSquares)
                 {
                     possibleSquare.UnHighlight();
                 }
-                                
+                         
                 if (m_previousSelectedSquare.OccupyingPiece is Pawn && selectedSquare.XCoordinate != m_previousSelectedSquare.XCoordinate && selectedSquare.OccupyingPiece == null)
                 {                                      
-                    this.WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece, true);
+                    this.WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece, enPassant: true, capture: "x");
                     if (WhosTurnIsIt == Alignment.White)
                     {
                         this.GetSquare(selectedSquare.XCoordinate, selectedSquare.YCoordinate - 1).OccupyingPiece = null;
@@ -222,7 +240,7 @@ namespace SpackChess
                     {
                         MovePiece(this.GetSquare(8, 8), this.GetSquare(6, 8));                       
                     }
-                    WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece, false, "0-0");
+                    WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece, capture, rochade: "0-0");
                 } 
                     //else if lange Rochade
                 else if (m_previousSelectedSquare.OccupyingPiece is King && selectedSquare.XCoordinate == m_previousSelectedSquare.XCoordinate - 2)
@@ -235,16 +253,18 @@ namespace SpackChess
                     {
                         MovePiece(this.GetSquare(1, 8), this.GetSquare(4, 8));
                     }
-                    WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece, false, "0-0-0");
+                    WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece, capture, rochade: "0-0-0");
                 } 
                     //else if Umwandlung
                 else if (m_previousSelectedSquare.OccupyingPiece is Pawn && (selectedSquare.YCoordinate == 1 | selectedSquare.YCoordinate == 8))
                 {
+                    PieceBase pawnForNotation = m_previousSelectedSquare.OccupyingPiece;
                     m_previousSelectedSquare.OccupyingPiece = this.PromotedPiece(selectedSquare);
+                    this.WriteLastMove(m_previousSelectedSquare, selectedSquare, pawnForNotation, capture, promotedTo: m_previousSelectedSquare.OccupyingPiece);
                 }
                 else
                 {
-                    this.WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece);
+                    this.WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece, capture);
                 }
                              
                 MovePiece(m_previousSelectedSquare, selectedSquare);
@@ -309,23 +329,27 @@ namespace SpackChess
             }           
         }
 
-        private void WriteLastMove(Square startSquare, Square endSquare, PieceBase movedPiece, bool enPassant = false, string rochade = "")
+        private void WriteLastMove(Square startSquare, Square endSquare, PieceBase movedPiece, string capture, bool enPassant = false, string rochade = "", PieceBase promotedTo = null)
         {
             if (enPassant)
             {
-                LastMove = movedPiece.ToString() + startSquare.ToString() + "x" + endSquare.ToString() + " e.p.";
+                LastMove = movedPiece.ToString() + startSquare.ToString() + capture + endSquare.ToString() + "e.p.";
             }
-            else if (rochade != "")
+            else if (!string.IsNullOrEmpty(rochade))
             {
                 LastMove = rochade;
             }
+            else if (promotedTo != null)
+            {
+                LastMove = movedPiece.ToString() + startSquare.ToString() + capture + endSquare.ToString() + "=" + promotedTo.ToString();
+            }
             else
             {
-                LastMove = movedPiece.ToString() + startSquare.ToString() + "-" + endSquare.ToString();
+                LastMove = movedPiece.ToString() + startSquare.ToString() + capture + endSquare.ToString();
             }
 
-            //todo: Promotion notieren, Notation überhaupt richtig stellen. Dann permament speichern. Außerdem Mechanismus zum Einlesen überlegen, dann könnten gespeicherte Spiele fortgesetzt werden.
-        }
+            ActualGameNotation.GameRecord.Add(LastMove);
+         }
         
         public void MovePiece(Square oldSquare, Square newSquare)
         {            
@@ -362,7 +386,7 @@ namespace SpackChess
 
         public Square GetKingLocation(Alignment color)
         {            
-            foreach (Square possibleSquare in this.m_allSqaures)
+            foreach (Square possibleSquare in this.m_allSquares)
             {               
                 if (possibleSquare.OccupyingPiece is King && possibleSquare.OccupyingPiece.Alignment == color)
                 {
@@ -374,7 +398,7 @@ namespace SpackChess
                 
         private bool verifyCheckMate(Alignment color)
         {           
-            foreach (Square occupiedSquare in this.m_allSqaures)
+            foreach (Square occupiedSquare in this.m_allSquares)
             {
                 if (occupiedSquare.OccupyingPiece != null && occupiedSquare.OccupyingPiece.Alignment == color)
                 {

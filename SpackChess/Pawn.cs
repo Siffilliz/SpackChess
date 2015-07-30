@@ -15,7 +15,6 @@ namespace SpackChess
         /// <returns></returns>
         /// 
         
-
         public Pawn(IChessboard chessboard, Alignment color)  
             : base(chessboard, color)
         {
@@ -108,15 +107,15 @@ namespace SpackChess
         private Square enPassant(Square currentLocation)
         {            
             Square enemyLocation;
-            string neededPawnPreviousMove;
+            string neededPreviousPawnMove;
 
             if (currentLocation.OccupyingPiece.Alignment == Alignment.White && currentLocation.YCoordinate == 5)
             {
                 enemyLocation = this.m_chessboard.GetSquare(currentLocation.XCoordinate - 1, currentLocation.YCoordinate);
                 if (enemyLocation != null)
                 {
-                    neededPawnPreviousMove = this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate + 2).ToString() + "-" + enemyLocation.ToString();
-                    if (this.m_chessboard.LastMove == neededPawnPreviousMove)
+                    neededPreviousPawnMove = this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate + 2).ToString() + "-" + enemyLocation.ToString();
+                    if (this.m_chessboard.LastMove == neededPreviousPawnMove)
                     {
                         return this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate + 1);
                     }
@@ -125,8 +124,8 @@ namespace SpackChess
                 enemyLocation = this.m_chessboard.GetSquare(currentLocation.XCoordinate + 1, currentLocation.YCoordinate);
                 if (enemyLocation != null)
                 {
-                    neededPawnPreviousMove = this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate + 2).ToString() + "-" + enemyLocation.ToString();
-                    if (this.m_chessboard.LastMove == neededPawnPreviousMove)
+                    neededPreviousPawnMove = this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate + 2).ToString() + "-" + enemyLocation.ToString();
+                    if (this.m_chessboard.LastMove == neededPreviousPawnMove)
                     {
                         return this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate + 1);
                     }
@@ -139,8 +138,8 @@ namespace SpackChess
                 enemyLocation = this.m_chessboard.GetSquare(currentLocation.XCoordinate - 1, currentLocation.YCoordinate);
                 if (enemyLocation != null)
                 {
-                    neededPawnPreviousMove = this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate - 2).ToString() + "-" + enemyLocation.ToString();
-                    if (this.m_chessboard.LastMove == neededPawnPreviousMove)
+                    neededPreviousPawnMove = this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate - 2).ToString() + "-" + enemyLocation.ToString();
+                    if (this.m_chessboard.LastMove == neededPreviousPawnMove)
                     {
                         return this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate - 1);
                     }
@@ -149,8 +148,8 @@ namespace SpackChess
                 enemyLocation = this.m_chessboard.GetSquare(currentLocation.XCoordinate + 1, currentLocation.YCoordinate);
                 if (enemyLocation != null)
                 {
-                    neededPawnPreviousMove = this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate - 2).ToString() + "-" + enemyLocation.ToString();
-                    if (this.m_chessboard.LastMove == neededPawnPreviousMove)
+                    neededPreviousPawnMove = this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate - 2).ToString() + "-" + enemyLocation.ToString();
+                    if (this.m_chessboard.LastMove == neededPreviousPawnMove)
                     {
                         return this.m_chessboard.GetSquare(enemyLocation.XCoordinate, enemyLocation.YCoordinate - 1);
                     }
