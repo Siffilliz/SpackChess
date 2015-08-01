@@ -10,8 +10,7 @@ namespace SpackChess
     public class Notation : INotation
     {
         protected List<string> m_gameRecord = new List<string>();  
-        protected string m_saveGameFileName;
-
+       
         public List<string> GameRecord
         {
             get { return m_gameRecord; }
@@ -21,10 +20,19 @@ namespace SpackChess
             }
         }
 
-        public void GetFileNameToSave()
+        public string GetFileName(bool save)
         {
-            Microsoft.Win32.SaveFileDialog saveGameDialog = new Microsoft.Win32.SaveFileDialog();
+            Microsoft.Win32.FileDialog saveGameDialog;
 
+            if (save)
+            {
+                saveGameDialog = new Microsoft.Win32.SaveFileDialog();
+            }
+            else
+            {
+                saveGameDialog = new Microsoft.Win32.OpenFileDialog();
+            }
+                
             saveGameDialog.DefaultExt = ".txt";
             saveGameDialog.Filter = "Textdateien (.txt)|*.txt";
 
@@ -32,20 +40,21 @@ namespace SpackChess
 
             if (dialogResult == true)
             {
-                m_saveGameFileName = saveGameDialog.FileName;
-            }                
+                return saveGameDialog.FileName;
+            }
+            else { return null; }
         }
 
-        public void WriteFile()
+        public void WriteFile(string fileName)
         {
-            if (m_saveGameFileName != null)
+            if (fileName != null)
             {
-                if (File.Exists(m_saveGameFileName))
+                if (File.Exists(fileName))
                 {
-                    File.Delete(m_saveGameFileName);
+                    File.Delete(fileName);
                 }
 
-                StreamWriter writer = File.CreateText(m_saveGameFileName);
+                StreamWriter writer = File.CreateText(fileName);
                 int moveCounter = 1;
                 for (int i = 0; i < m_gameRecord.Count; i++)
                 {
@@ -61,6 +70,31 @@ namespace SpackChess
                 }
                 writer.Close();
             }           
+        }
+      
+        public List<string> LoadSaveGame(string fileName)
+        {
+            if (fileName != null)
+            {
+                StreamReader reader = File.OpenText(fileName);
+                string fileContent = reader.ReadToEnd();
+                string[] movesSplit = fileContent.Split('.');
+                List<string> movesForChessboard = new List<string>();
+                //nochmal bei blank splitten, dann string die länge 1 haben ignorieren => nur die züge sind da. Züge an Chessboard "übergeben" und ausführen. Prüfen welche Farbe als letztes bewegt wurde => der andere ist dran.
+                foreach (string move in movesSplit)
+                {                    
+                    string[] movesSplitAgain = move.Split(' ');              
+                    foreach (string finalMove in movesSplitAgain)
+                    {
+                        if (finalMove.Length > 1)
+                        {
+                            movesForChessboard.Add(finalMove);
+                        }
+                    }
+                }
+                return movesForChessboard;          
+            }
+            return null;
         }
     }
 }

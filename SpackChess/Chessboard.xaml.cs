@@ -205,7 +205,8 @@ namespace SpackChess
                 m_previousPossibleSquares.Clear();
             }
             else if (m_previousPossibleSquares.Contains(selectedSquare))        // ein Feld der möglichen Züge wurde gewählt => Zug durchführen
-            {               
+            {                                                                   // todo: hier das ganze rausziehen und in eigener methode ablaufen lassen. so kann auch von "extern" (Spiel Laden) darauf zugegriffen werden. 
+                                                                                // Übergabe ist previous selectedSquare wie selectedSquare. Diese beiden sind auch die beiden Teile des Moves aus Spiel Laden.
                 string capture = "-";
                 if (selectedSquare.OccupyingPiece != null)
                 {
@@ -216,7 +217,7 @@ namespace SpackChess
                 {
                     possibleSquare.UnHighlight();
                 }
-                         
+                                                                                 // en Passant?
                 if (m_previousSelectedSquare.OccupyingPiece is Pawn && selectedSquare.XCoordinate != m_previousSelectedSquare.XCoordinate && selectedSquare.OccupyingPiece == null)
                 {                                      
                     this.WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece, enPassant: true, capture: "x");
@@ -229,7 +230,7 @@ namespace SpackChess
                         this.GetSquare(selectedSquare.XCoordinate, selectedSquare.YCoordinate + 1).OccupyingPiece = null;
                     }                 
                 } 
-                    //else if kurze Rochade
+                    // kurze Rochade?
                 else if (m_previousSelectedSquare.OccupyingPiece is King && selectedSquare.XCoordinate == m_previousSelectedSquare.XCoordinate + 2)
                 {
                     if (WhosTurnIsIt == Alignment.White)
@@ -242,7 +243,7 @@ namespace SpackChess
                     }
                     WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece, capture, rochade: "0-0");
                 } 
-                    //else if lange Rochade
+                    // lange Rochade?
                 else if (m_previousSelectedSquare.OccupyingPiece is King && selectedSquare.XCoordinate == m_previousSelectedSquare.XCoordinate - 2)
                 {
                     if (WhosTurnIsIt == Alignment.White)
@@ -255,7 +256,7 @@ namespace SpackChess
                     }
                     WriteLastMove(m_previousSelectedSquare, selectedSquare, m_previousSelectedSquare.OccupyingPiece, capture, rochade: "0-0-0");
                 } 
-                    //else if Umwandlung
+                    // Umwandlung?
                 else if (m_previousSelectedSquare.OccupyingPiece is Pawn && (selectedSquare.YCoordinate == 1 | selectedSquare.YCoordinate == 8))
                 {
                     PieceBase pawnForNotation = m_previousSelectedSquare.OccupyingPiece;

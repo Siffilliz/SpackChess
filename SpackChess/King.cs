@@ -56,8 +56,8 @@ namespace SpackChess
             }
             
             base.SimulateMove(validSquares);
-
-            if (!this.HasMoved)
+           
+            if (!this.HasMoved && !this.m_chessboard.IsKingThreatened(Alignment))
             {
                 if (this.Alignment == Alignment.White)
                 {

@@ -14,8 +14,10 @@ namespace SpackChess
             set;
         }
 
-        void GetFileNameToSave();
+        string GetFileName(bool save);
 
-        void WriteFile();
+        void WriteFile(string filename);
+
+        List<string> LoadSaveGame(string filename);       
     }
 }
