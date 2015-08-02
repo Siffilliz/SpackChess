@@ -31,11 +31,13 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Button x:Name="SaveGame" Grid.Row="0" Click="SaveGame_Click" >Spiel Speichern...</Button>
                 <Button x:Name="LoadGame" Grid.Row="1" Click="LoadGame_Click" >Spiel Laden...</Button>
-                <Button x:Name="ShowActualMatch" Grid.Row="2" >Zugfolge ansehen</Button>
-                <Button x:Name="Connect" Grid.Row="3" >Mit Spieler verbinden</Button>
+                <Button x:Name="ResetGame" Grid.Row="2" Click="ResetGame_Click" >Spiel zurücksetzen</Button>
+                <Button x:Name="ShowActualMatch" Grid.Row="3" >Zugfolge ansehen</Button>
+                <Button x:Name="Connect" Grid.Row="4" >Mit Spieler verbinden</Button>
             </Grid>
 
             <Grid Name="GrcapturedPiecesWhite" Grid.Row="2">

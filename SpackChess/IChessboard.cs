@@ -15,6 +15,8 @@ namespace SpackChess
 
         Square GetSquare(int x, int y);
 
+        Square GetSquare(string squareName);
+
         string LastMove
         {
             get;
@@ -38,7 +40,10 @@ namespace SpackChess
 
         void ResetGame();
 
-        void MovePiece(Square oldSquare, Square newSquare);        
-        
+        void ExecuteSelectedMove(Square originSquare, Square targetSquare, PieceBase promotedTo = null);
+
+        void MovePiece(Square oldSquare, Square newSquare);
+
+        PieceBase PromotedPiece(Square selectedSquare, ChessPieces promotedTo = ChessPieces.Pawn);
     }
 }
