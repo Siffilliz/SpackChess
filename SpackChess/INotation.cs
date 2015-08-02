@@ -11,7 +11,6 @@ namespace SpackChess
         List<string> GameRecord
         {
             get;
-            set;
         }
 
         string GetFileName(bool save);

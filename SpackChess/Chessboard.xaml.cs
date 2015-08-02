@@ -93,8 +93,11 @@ namespace SpackChess
         public void ResetGame()
         {
             ActualGameNotation.GameRecord.Clear();
-            this.WhosTurnIsIt = Alignment.White;
-
+            if (this.WhosTurnIsIt == Alignment.Black)
+            {
+                this.WhosTurnIsIt = Alignment.White;
+            }           
+            
             foreach (Square square in this.m_allSquares)
             {
                 square.OccupyingPiece = null;

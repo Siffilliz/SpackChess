@@ -14,10 +14,10 @@ namespace SpackChess
         public List<string> GameRecord
         {
             get { return m_gameRecord; }
-            set
-            {
-                m_gameRecord = value;
-            }
+            //set
+            //{
+            //    m_gameRecord = value;
+            //}
         }
 
         public string GetFileName(bool save)
@@ -56,7 +56,7 @@ namespace SpackChess
 
                 StreamWriter writer = File.CreateText(fileName);
                 int moveCounter = 1;
-                for (int i = 0; i < m_gameRecord.Count; i++)
+                for (int i = 0; i < this.GameRecord.Count; i++)
                 {
                     int isWhiteMove = i + 1;                  
                     if (isWhiteMove % 2 == 1)
@@ -65,7 +65,7 @@ namespace SpackChess
                         writer.Write(".");
                         moveCounter++;                         
                     }
-                    writer.Write(m_gameRecord[i]);
+                    writer.Write(this.GameRecord[i]);
                     writer.Write(" ");
                 }
                 writer.Close();
