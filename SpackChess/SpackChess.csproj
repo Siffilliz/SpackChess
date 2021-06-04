@@ -13,6 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -38,6 +39,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -89,7 +92,10 @@
       <DependentUpon>Chessboard.xaml</DependentUpon>
     </Compile>
     <Compile Include="IChessboard.cs" />
+    <Compile Include="ISpackCheckService.cs" />
     <Compile Include="INotation.cs" />
+    <Compile Include="ISpackChessServiceCallback.cs" />
+    <Compile Include="SpackCheckService.cs" />
     <Compile Include="King.cs" />
     <Compile Include="Knight.cs" />
     <Compile Include="ChessPieces.cs" />
@@ -103,6 +109,7 @@
     </Compile>
     <Compile Include="Queen.cs" />
     <Compile Include="Rook.cs" />
+    <Compile Include="SpackChessServiceCallback.cs" />
     <Compile Include="SplashNoMoves.xaml.cs">
       <DependentUpon>SplashNoMoves.xaml</DependentUpon>
     </Compile>
@@ -139,7 +146,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Pictures\BB.png" />

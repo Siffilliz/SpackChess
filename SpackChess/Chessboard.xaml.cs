@@ -40,11 +40,11 @@ namespace SpackChess
         }       
         public Square GetSquare(int x, int y)
         {
-            return this.m_allSquares.FirstOrDefault(s => s.XCoordinate == x && s.YCoordinate == y);
+            return this.AllSquares.FirstOrDefault(s => s.XCoordinate == x && s.YCoordinate == y);
         }
         public Square GetSquare(string squareName)
         {
-            return this.m_allSquares.FirstOrDefault(s => s.ToString() == squareName);
+            return this.AllSquares.FirstOrDefault(s => s.ToString() == squareName);
         }
         public string LastMove
         {
@@ -80,7 +80,7 @@ namespace SpackChess
                     newSquare.SetValue(Grid.RowProperty, 8 - y);
                     newSquare.SetValue(Grid.ColumnProperty, x - 1);
                     newSquare.MouseUp += this.Square_MouseUp;
-                    this.m_allSquares.Add(newSquare);
+                    this.AllSquares.Add(newSquare);
                     this.GrChessboard.Children.Add(newSquare);
                 }
             }
@@ -98,12 +98,12 @@ namespace SpackChess
                 this.WhosTurnIsIt = Alignment.White;
             }           
             
-            foreach (Square square in this.m_allSquares)
+            foreach (Square square in this.AllSquares)
             {
                 square.OccupyingPiece = null;
             }
             
-            foreach (Square squareToOccupy in this.m_allSquares)
+            foreach (Square squareToOccupy in this.AllSquares)
             {
                 switch (squareToOccupy.YCoordinate)
                 {
@@ -273,7 +273,7 @@ namespace SpackChess
                 capture = "x";
             }
 
-            foreach (Square possibleSquare in m_allSquares)
+            foreach (Square possibleSquare in AllSquares)
             {
                 possibleSquare.UnHighlight();
             }
@@ -417,7 +417,7 @@ namespace SpackChess
 
         public Square GetKingLocation(Alignment color)
         {            
-            foreach (Square possibleSquare in this.m_allSquares)
+            foreach (Square possibleSquare in this.AllSquares)
             {               
                 if (possibleSquare.OccupyingPiece is King && possibleSquare.OccupyingPiece.Alignment == color)
                 {
@@ -429,7 +429,7 @@ namespace SpackChess
                 
         private bool verifyCheckMate(Alignment color)
         {           
-            foreach (Square occupiedSquare in this.m_allSquares)
+            foreach (Square occupiedSquare in this.AllSquares)
             {
                 if (occupiedSquare.OccupyingPiece != null && occupiedSquare.OccupyingPiece.Alignment == color)
                 {
@@ -720,4 +720,7 @@ namespace SpackChess
         }
 
     }
+
+    //todo: Promotion funktioniert nicht
+    //todo: Schach4.txt laden geht nicht
 }

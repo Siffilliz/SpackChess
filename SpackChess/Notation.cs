@@ -13,11 +13,7 @@ namespace SpackChess
        
         public List<string> GameRecord
         {
-            get { return m_gameRecord; }
-            //set
-            //{
-            //    m_gameRecord = value;
-            //}
+            get { return m_gameRecord; }         
         }
 
         public string GetFileName(bool save)
